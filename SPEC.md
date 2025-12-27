@@ -179,6 +179,7 @@ contracts/
 | `tags` | No | string[] | [] |
 | `skip` | No | boolean | false |
 | `skip_if` | No | string | null |
+| `files` | No | string or string[] | null |
 
 ### Executor-Specific Constraints
 
@@ -492,6 +493,7 @@ Explicit operators, no magic parsing:
 | `has_keys` | Object has keys | `op: has_keys, actual: $.obj, expected: [a, b]` |
 | `contains` | Array/string contains | `op: contains, actual: $.arr, expected: "x"` |
 | `matches` | Regex match (Python re) | `op: matches, actual: $.str, expected: "^foo.*"` |
+| `not_matches` | Regex must not match | `op: not_matches, actual: $.str, pattern: "forbidden.*"` |
 | `file_exists` | File at path exists (implicit expected=true) | `op: file_exists, actual: $.path` |
 | `in_range` | Value in [min, max] | `op: in_range, actual: $.x, min: 0, max: 100` |
 | `approx` | Approximately equal (within tolerance) | `op: approx, actual: $.x, expected: 100, tolerance: 5` |

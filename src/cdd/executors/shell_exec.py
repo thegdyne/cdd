@@ -1,18 +1,16 @@
 # src/cdd/executors/shell_exec.py
 """Shell executor: handles shell action."""
 from __future__ import annotations
-
 import os
 import subprocess
 import time
 from typing import Any, Dict
-
-from cdd.executors.base import Executor, RunContext, StepResult, StepSpec
+from cdd.executors.base import RunContext, StepResult, StepSpec
+from cdd.jsonpath import interpolate_vars
 
 
 class ShellExecutor:
     """Execute shell commands."""
-
     name = "shell"
 
     def supports(self, action: str) -> bool:
@@ -37,6 +35,9 @@ class ShellExecutor:
         if not command:
             return StepResult(ok=False, error_code="missing_command", message="shell action requires 'command' field")
 
+        # Interpolate variables in command
+        command = interpolate_vars(command, ctx.vars)
+
         # Build environment
         env = os.environ.copy()
         env.update(runner_cfg.get("env") or {})
@@ -45,8 +46,8 @@ class ShellExecutor:
         env["ARTIFACTS_DIR"] = str(ctx.artifacts_dir)
 
         timeout_s = timeout_ms / 1000.0 if timeout_ms else None
-
         start = time.perf_counter()
+
         try:
             result = subprocess.run(
                 command,
@@ -67,6 +68,7 @@ class ShellExecutor:
                 stdout=result.stdout,
                 stderr=result.stderr,
             )
+
         except subprocess.TimeoutExpired:
             return StepResult(
                 ok=False,

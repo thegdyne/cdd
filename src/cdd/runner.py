@@ -107,7 +107,7 @@ class ContractRunner:
         injected_vars = injected_vars or {}
         only_test_ids = only_test_ids or []
 
-        repo_root = contracts_path.parent if contracts_path.is_file() else contracts_path.parent
+        repo_root = contracts_path.parent.parent if contracts_path.is_file() else contracts_path.parent
         
         try:
             project_path = _find_project_contract(contracts_path if contracts_path.is_dir() else repo_root / "contracts")
@@ -231,10 +231,10 @@ class ContractRunner:
         if not isinstance(tests, list):
             return [self._test_error("INVALID", None, "error", "tests must be a list")]
 
-        is_static = executor_name == "static"
+        is_static_executor = executor_name == "static"
         executor = None
 
-        if not is_static:
+        if not is_static_executor:
             try:
                 executor = self.executors.create(executor_name)
             except Exception as e:
@@ -245,9 +245,9 @@ class ContractRunner:
             except Exception as e:
                 return [self._test_error("EXECUTOR", None, "error", f"Executor setup failed: {e}")]
 
-        # Static analysis
+        # Static analysis (for executor: static)
         ast_blob: Optional[Dict[str, Any]] = None
-        if is_static:
+        if is_static_executor:
             ast_blob = self._run_static_analyze(ctx, runner_cfg, contract_doc, contract_path)
             ctx.runner["ast"] = ast_blob
 
@@ -262,13 +262,24 @@ class ContractRunner:
             if only_test_ids and test_id not in only_test_ids:
                 continue
 
-            # Static: no steps allowed
+            test_type = t.get("type", "")
+            
+            # Handle type: static tests (file scanning) - distinct from executor: static
+            if test_type == "static" and t.get("files"):
+                result = self._run_static_file_test(ctx, t, contract_path)
+                results.append(result)
+                
+                if self.cfg.matrix_fail_fast and result.get("status") in ("fail", "error"):
+                    break
+                continue
+
+            # Static executor: no steps allowed
             steps = t.get("steps", [])
-            if is_static and steps not in (None, [], {}):
+            if is_static_executor and steps not in (None, [], {}):
                 results.append(self._test_error(test_id, t.get("requirement"), "error", "Static tests must have no steps"))
                 continue
 
-            if is_static:
+            if is_static_executor:
                 step_results: List[StepResult] = []
                 saved: Dict[str, Any] = {}
             else:
@@ -302,6 +313,64 @@ class ContractRunner:
                 results.append(self._test_error("TEARDOWN", None, "error", "Executor teardown failed"))
 
         return results
+
+    def _run_static_file_test(
+        self,
+        ctx: RunContext,
+        test: Dict[str, Any],
+        contract_path: Path,
+    ) -> Dict[str, Any]:
+        """
+        Run a static file scanning test (type: static with files: field).
+        
+        Uses the static executor's file scanning capability.
+        """
+        from cdd.executors.static_exec import run_static_test
+        
+        test_id = test.get("id", "")
+        name = test.get("name", "")
+        requirement = test.get("requirement")
+        
+        start = time.time()
+        
+        # Run static file scan
+        result = run_static_test(
+            test=test,
+            base_dir=contract_path.parent,
+            vars_dict=ctx.vars,
+        )
+        
+        dur_ms = int((time.time() - start) * 1000)
+        
+        status = result.get("status", "error")
+        assertions = result.get("assertions", [])
+        error = result.get("error")
+        files_scanned = result.get("files_scanned", 0)
+        
+        # Convert AssertionResult objects to dicts
+        assertions_out = []
+        for ar in assertions:
+            if isinstance(ar, AssertionResult):
+                assertions_out.append(self._assertion_to_dict(ar))
+            elif isinstance(ar, dict):
+                assertions_out.append(ar)
+        
+        message = error if error else f"Scanned {files_scanned} files"
+        if status == "fail":
+            message = f"{len(assertions_out)} failures in {files_scanned} files"
+        
+        return {
+            "id": test_id,
+            "name": name,
+            "requirement": requirement,
+            "type": "static",
+            "status": status,
+            "message": message,
+            "assertions": assertions_out,
+            "steps": [],
+            "duration_ms": dur_ms,
+            "files_scanned": files_scanned,
+        }
 
     def _execute_steps(
         self,
@@ -468,7 +537,7 @@ class ContractRunner:
         return "pass", "All assertions passed"
 
     def _assertion_to_dict(self, ar: AssertionResult) -> Dict[str, Any]:
-        return {
+        d = {
             "op": ar.op,
             "actual": ar.actual,
             "expected": ar.expected,
@@ -476,6 +545,10 @@ class ContractRunner:
             "error": ar.error,
             "details": ar.details or {},
         }
+        # Include message if present
+        if ar.message:
+            d["message"] = ar.message
+        return d
 
     def _step_result_to_dict(self, sr: StepResult) -> Dict[str, Any]:
         return {
