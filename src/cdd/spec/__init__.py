@@ -13,7 +13,7 @@ def get_tool_version() -> str:
     if version_file.exists():
         return version_file.read_text(encoding="utf-8").strip()
     # Fallback: read from pyproject.toml or hardcode
-    return "1.1.0"
+    return "1.1.3"
 
 
 def load_schema_version() -> str:
