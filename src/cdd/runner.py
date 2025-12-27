@@ -107,7 +107,7 @@ class ContractRunner:
         injected_vars = injected_vars or {}
         only_test_ids = only_test_ids or []
 
-        repo_root = contracts_path.parent if contracts_path.is_file() else contracts_path.parent
+        repo_root = contracts_path.parent.parent if contracts_path.is_file() else contracts_path.parent
         
         try:
             project_path = _find_project_contract(contracts_path if contracts_path.is_dir() else repo_root / "contracts")
