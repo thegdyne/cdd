@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cdd"
-version = "1.1.0"
+version = "1.1.3"
 description = "Contract-Driven Development spec + tooling"
 readme = "README.md"
 requires-python = ">=3.10"
