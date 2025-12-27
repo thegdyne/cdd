@@ -18,6 +18,7 @@ class AssertionResult:
     expected: Any
     pass_: bool
     error: Optional[str] = None  # "path_not_found" | "type_mismatch" | "invalid_path" | ...
+    message: Optional[str] = None  # user-provided context for failure reporting
     details: Dict[str, Any] = field(default_factory=dict)
 
 
@@ -34,9 +35,12 @@ def run_assertions(context: Dict[str, Any], asserts: List[Dict[str, Any]]) -> Li
         op = a.get("op")
         actual_expr = a.get("actual")
         expected_expr = a.get("expected")
+        pattern_expr = a.get("pattern")  # for matches/not_matches
+        message = a.get("message")  # user context
 
         actual_val, actual_err = _eval_value(context, actual_expr)
         expected_val, expected_err = _eval_value(context, expected_expr)
+        pattern_val, pattern_err = _eval_value(context, pattern_expr) if pattern_expr else (None, None)
 
         # Implicit expected for file_exists
         if op == "file_exists" and expected_expr is None:
@@ -44,13 +48,26 @@ def run_assertions(context: Dict[str, Any], asserts: List[Dict[str, Any]]) -> Li
             expected_err = None
 
         if actual_err:
-            results.append(AssertionResult(op=op, actual=None, expected=expected_val, pass_=False, error=actual_err))
+            results.append(AssertionResult(
+                op=op, actual=None, expected=expected_val, 
+                pass_=False, error=actual_err, message=message
+            ))
             continue
         if expected_err:
-            results.append(AssertionResult(op=op, actual=actual_val, expected=None, pass_=False, error=expected_err))
+            results.append(AssertionResult(
+                op=op, actual=actual_val, expected=None, 
+                pass_=False, error=expected_err, message=message
+            ))
+            continue
+        if pattern_err:
+            results.append(AssertionResult(
+                op=op, actual=actual_val, expected=pattern_val, 
+                pass_=False, error=pattern_err, message=message
+            ))
             continue
 
-        res = _apply_op(op, actual_val, expected_val, a)
+        res = _apply_op(op, actual_val, expected_val, pattern_val, a)
+        res.message = message  # Attach message
         results.append(res)
     
     return results
@@ -72,7 +89,7 @@ def _eval_value(context: Dict[str, Any], expr: Any) -> Tuple[Any, Optional[str]]
     return expr, None
 
 
-def _apply_op(op: str, actual: Any, expected: Any, raw: Dict[str, Any]) -> AssertionResult:
+def _apply_op(op: str, actual: Any, expected: Any, pattern: Any, raw: Dict[str, Any]) -> AssertionResult:
     """Apply an assertion operator."""
     try:
         if op == "eq":
@@ -125,10 +142,18 @@ def _apply_op(op: str, actual: Any, expected: Any, raw: Dict[str, Any]) -> Asser
             return AssertionResult(op, actual, expected, ok)
 
         if op == "matches":
-            if not isinstance(actual, str) or not isinstance(expected, str):
-                return AssertionResult(op, actual, expected, False, error="type_mismatch")
-            ok = re.search(expected, actual) is not None
-            return AssertionResult(op, actual, expected, ok)
+            pat = pattern or expected
+            if not isinstance(actual, str) or not isinstance(pat, str):
+                return AssertionResult(op, actual, pat, False, error="type_mismatch")
+            ok = re.search(pat, actual, re.MULTILINE) is not None
+            return AssertionResult(op, actual, pat, ok)
+
+        if op == "not_matches":
+            pat = pattern or expected
+            if not isinstance(actual, str) or not isinstance(pat, str):
+                return AssertionResult(op, actual, pat, False, error="type_mismatch")
+            ok = re.search(pat, actual, re.MULTILINE) is None
+            return AssertionResult(op, actual, pat, ok)
 
         if op == "file_exists":
             if not isinstance(actual, str):

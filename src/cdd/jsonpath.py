@@ -2,8 +2,9 @@
 """Minimal JSONPath resolver per spec."""
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
-from typing import Any, List, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 
 @dataclass(frozen=True)
@@ -11,14 +12,46 @@ class PathResolution:
     """Result of JSONPath resolution."""
     ok: bool
     value: Any = None
-    error: str | None = None  # "path_not_found" | "type_mismatch" | "invalid_path"
+    error: Union[str, None] = None  # "path_not_found" | "type_mismatch" | "invalid_path"
+
+
+def interpolate_vars(value: Any, vars_dict: Dict[str, Any]) -> Any:
+    """
+    Replace {var} and $.vars.X references in strings with actual values.
+    
+    Supports:
+      - {pack_id} -> vars_dict["pack_id"]
+      - $.vars.pack_id -> vars_dict["pack_id"]
+    """
+    if isinstance(value, str):
+        # First handle {var} style
+        def replacer_brace(m):
+            var_name = m.group(1)
+            return str(vars_dict.get(var_name, ''))
+        value = re.sub(r'\{([a-zA-Z_][a-zA-Z0-9_]*)\}', replacer_brace, value)
+        
+        # Then handle $.vars.X style
+        def replacer_path(m):
+            var_name = m.group(1)
+            return str(vars_dict.get(var_name, ''))
+        value = re.sub(r'\$\.vars\.([a-zA-Z_][a-zA-Z0-9_]*)', replacer_path, value)
+        
+        return value
+    elif isinstance(value, list):
+        return [interpolate_vars(v, vars_dict) for v in value]
+    elif isinstance(value, dict):
+        return {k: interpolate_vars(v, vars_dict) for k, v in value.items()}
+    return value
 
 
 def resolve_jsonpath(root: Any, path: str) -> PathResolution:
     """
     Minimal JSONPath resolver per spec.
     
-    Supports: $.key.key2[0].key3
+    Supports:
+      - $.key.key2[0].key3
+      - $.key["quoted.key"].value
+      
     Missing path resolves to null (ok=True, value=None).
     No type coercion.
     """
@@ -57,9 +90,8 @@ def resolve_jsonpath(root: Any, path: str) -> PathResolution:
 
 
 def _tokenize(path: str) -> List[Tuple[str, Any]]:
-    """Parse $.a.b[0].c into tokens."""
-    # path begins with "$."
-    s = path[2:]
+    """Parse $.a.b[0].c["quoted"] into tokens."""
+    s = path[2:]  # strip "$."
     out: List[Tuple[str, Any]] = []
     i = 0
     buf = ""
@@ -79,10 +111,16 @@ def _tokenize(path: str) -> List[Tuple[str, Any]]:
             j = s.find("]", i)
             if j == -1:
                 return [("invalid", None)]
-            idx_str = s[i + 1 : j].strip()
-            if not idx_str.lstrip("-").isdigit():
+            inner = s[i + 1 : j].strip()
+            
+            # Check for quoted string ["key"] or ['key']
+            if (inner.startswith('"') and inner.endswith('"')) or \
+               (inner.startswith("'") and inner.endswith("'")):
+                out.append(("key", inner[1:-1]))
+            elif inner.lstrip("-").isdigit():
+                out.append(("idx", int(inner)))
+            else:
                 return [("invalid", None)]
-            out.append(("idx", int(idx_str)))
             i = j + 1
             continue
         buf += ch
