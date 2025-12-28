@@ -2,8 +2,8 @@
 
 Future additions to the Contract-Driven Development spec and tooling.
 
-**Applies to spec version:** 1.0.14 (frozen)  
-**Last updated:** 2025-12-27
+**Applies to spec version:** 1.1.3  
+**Last updated:** 2025-12-28
 
 ---
 
@@ -11,20 +11,20 @@ Future additions to the Contract-Driven Development spec and tooling.
 
 | Item | Status | Notes |
 |------|--------|-------|
-| `approx` operator | âœ… Done (v1.0.6) | Float/timing comparisons with tolerance |
-| `skip_if` grammar lock-down | âœ… Done (v1.0.6) | Restricted safe expression subset |
-| Numeric version fields | âœ… Done (v1.0.7) | `_major`, `_minor` for safe version comparisons |
-| Requirement coverage rules | âœ… Done (v1.0.7) | Only linked tests count toward coverage |
-| Matrix report shapes | âœ… Done (v1.0.7) | Per-target report + matrix summary report |
-| Shell executor semantics | âœ… Done (v1.0.8) | cwd, artifacts_dir, env, timeout defined |
-| Report file outputs | âœ… Done (v1.0.9) | File naming convention for matrix runs |
-| Report invariants | âœ… Done (v1.0.10) | Status values, assertions array, required fields |
-| AST stability note | âœ… Done (v1.0.10) | Only calls/bus_reads stable in v1.0 |
-| `contract-lint` | ðŸ”² TODO | Schema validation + requirement coverage |
-| Python executor | ðŸ”² TODO | `call`, `call_n`, step envelope |
-| `sclang` executor | ðŸ”² TODO | `render_nrt` + metrics JSON output |
-| Static executor | ðŸ”² TODO | `sclang_ast` parser (MVP); `python_ast` later |
-| Report writer | ðŸ”² TODO | JSON output per schema_version 1.0 (core MVP) |
+| `approx` operator | ✅ Done (v1.0.6) | Float/timing comparisons with tolerance |
+| `skip_if` grammar lock-down | ✅ Done (v1.0.6) | Restricted safe expression subset |
+| Numeric version fields | ✅ Done (v1.0.7) | `_major`, `_minor` for safe version comparisons |
+| Requirement coverage rules | ✅ Done (v1.0.7) | Only linked tests count toward coverage |
+| Matrix report shapes | ✅ Done (v1.0.7) | Per-target report + matrix summary report |
+| Shell executor semantics | ✅ Done (v1.0.8) | cwd, artifacts_dir, env, timeout defined |
+| Report file outputs | ✅ Done (v1.0.9) | File naming convention for matrix runs |
+| Report invariants | ✅ Done (v1.0.10) | Status values, assertions array, required fields |
+| AST stability note | ✅ Done (v1.0.10) | Only calls/bus_reads stable in v1.0 |
+| `contract-lint` | 🔲 TODO | Schema validation + requirement coverage |
+| Python executor | 🔲 TODO | `call`, `call_n`, step envelope |
+| `sclang` executor | 🔲 TODO | `render_nrt` + metrics JSON output |
+| Static executor | 🔲 TODO | `sclang_ast` parser (MVP); `python_ast` later |
+| Report writer | 🔲 TODO | JSON output per schema_version 1.0 (core MVP) |
 
 **Goal:** Run `contract-test` against a single Python contract and get a valid single-target `report.json` (no matrix required for MVP).
 
@@ -34,13 +34,13 @@ Future additions to the Contract-Driven Development spec and tooling.
 
 | Item | Status | Notes |
 |------|--------|-------|
-| `contract-scaffold` | ðŸ”² TODO | Generate implementation stubs from contract |
-| `schema` operator | ðŸ”² TODO | Validate object shape against schema |
-| `all_lt` / `all_gt` quantifiers | ðŸ”² TODO | Assert condition over all array elements |
-| `any` quantifier | ðŸ”² TODO | Assert condition over any array element |
-| Report diff tooling | ðŸ”² TODO | Compare two reports, show regressions |
-| Node executor | ðŸ”² TODO | JavaScript/TypeScript support |
-| `--must-only` flag | ðŸ”² TODO | Run only tests linked to `must` requirements |
+| `contract-scaffold` | 🔲 TODO | Generate implementation stubs from contract |
+| `schema` operator | 🔲 TODO | Validate object shape against schema |
+| `all_lt` / `all_gt` quantifiers | 🔲 TODO | Assert condition over all array elements |
+| `any` quantifier | 🔲 TODO | Assert condition over any array element |
+| Report diff tooling | 🔲 TODO | Compare two reports, show regressions |
+| Node executor | 🔲 TODO | JavaScript/TypeScript support |
+| `--must-only` flag | 🔲 TODO | Run only tests linked to `must` requirements |
 
 **Goal:** Full Noise Engine migration to contract-based validation.
 
@@ -50,11 +50,11 @@ Future additions to the Contract-Driven Development spec and tooling.
 
 | Item | Status | Notes |
 |------|--------|-------|
-| AST schema versioning | ðŸ”² TODO | `$.ast.schema_version` field |
-| `tolerance_pct` for approx | ðŸ”² TODO | Percentage-based tolerance option |
-| Audio metrics expansion | ðŸ”² TODO | Clipping count, NaN/Inf detection, spectral centroid |
-| Stereo correlation metric | ðŸ”² TODO | Left/right channel correlation check |
-| CI integration guide | ðŸ”² TODO | GitHub Actions workflow examples |
+| AST schema versioning | 🔲 TODO | `$.ast.schema_version` field |
+| `tolerance_pct` for approx | 🔲 TODO | Percentage-based tolerance option |
+| Audio metrics expansion | 🔲 TODO | Clipping count, NaN/Inf detection, spectral centroid |
+| Stereo correlation metric | 🔲 TODO | Left/right channel correlation check |
+| CI integration guide | 🔲 TODO | GitHub Actions workflow examples |
 
 **Goal:** Production-grade tooling with extended diagnostics.
 

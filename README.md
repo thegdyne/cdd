@@ -6,10 +6,10 @@ A methodology where you write the spec and tests first, then build the implement
 
 CDD inverts the typical development flow:
 
-1. **Write a contract** — Define requirements and tests in YAML before writing code
-2. **Implement against it** — Build code that makes the tests pass
-3. **Iterate with feedback** — Run tests, see failures with full context, fix, repeat
-4. **Freeze when stable** — Lock the contract, changes require version bumps
+1. **Write a contract** "” Define requirements and tests in YAML before writing code
+2. **Implement against it** "” Build code that makes the tests pass
+3. **Iterate with feedback** "” Run tests, see failures with full context, fix, repeat
+4. **Freeze when stable** "” Lock the contract, changes require version bumps
 
 The contract is the source of truth. The code exists to fulfill it.
 
@@ -17,17 +17,17 @@ The contract is the source of truth. The code exists to fulfill it.
 
 ```bash
 # Via pipx (recommended for CLI)
-pipx install git+https://github.com/thegdyne/cdd.git@v1.1.0
+pipx install git+https://github.com/thegdyne/cdd.git@v1.1.3
 
 # Via pip
-pip install git+https://github.com/thegdyne/cdd.git@v1.1.0
+pip install git+https://github.com/thegdyne/cdd.git@v1.1.3
 ```
 
 Verify:
 
 ```bash
 cdd spec --version
-# 1.1.0
+# 1.1.3
 ```
 
 ## Using CDD in Your Project
@@ -37,7 +37,7 @@ cdd spec --version
 ```yaml
 # my-project/contracts/project.yaml
 project: my-project
-cdd_spec: 1.1.0          # Locks to this CDD spec version
+cdd_spec: 1.1.3          # Locks to this CDD spec version
 version: 1.0.0
 status: draft            # draft | frozen | deprecated
 
@@ -109,7 +109,7 @@ Write code in `src/component_a.py` that makes `cdd test` pass. The test output s
 
 ### 5. Freeze when stable
 
-Change `status: draft` → `status: frozen` in your contracts. Now any changes require a version bump.
+Change `status: draft` â†’ `status: frozen` in your contracts. Now any changes require a version bump.
 
 ## Version Compatibility
 
@@ -117,8 +117,8 @@ The `cdd_spec` field in your project contract declares which CDD spec version yo
 
 | Scenario | Behavior |
 |----------|----------|
-| Major mismatch (project: 2.x, tool: 1.x) | **Error** — incompatible |
-| Minor/patch mismatch | **Warning** — should be compatible |
+| Major mismatch (project: 2.x, tool: 1.x) | **Error** "” incompatible |
+| Minor/patch mismatch | **Warning** "” should be compatible |
 | Exact match required | Use `--require-exact-spec` flag |
 
 When CDD releases a new version:
@@ -162,21 +162,21 @@ Recommended layout for a CDD-based project:
 
 ```
 my-project/
-├── contracts/
-│   ├── project.yaml        # Project contract (required)
-│   ├── component_a.yaml    # Component contracts
-│   └── component_b.yaml
-├── src/
-│   ├── component_a.py      # Implementation
-│   └── component_b.py
-└── .cdd-version            # Optional fallback (if no cdd_spec in project.yaml)
+â”œâ”€â”€ contracts/
+â”‚   â”œâ”€â”€ project.yaml        # Project contract (required)
+â”‚   â”œâ”€â”€ component_a.yaml    # Component contracts
+â”‚   â””â”€â”€ component_b.yaml
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ component_a.py      # Implementation
+â”‚   â””â”€â”€ component_b.py
+â””â”€â”€ .cdd-version            # Optional fallback (if no cdd_spec in project.yaml)
 ```
 
 ## Documentation
 
-- [SPEC.md](SPEC.md) — The normative specification (what contracts look like, assertion operators, report format)
-- [ROADMAP.md](ROADMAP.md) — Implementation status and future plans
-- [CHANGELOG.md](CHANGELOG.md) — Version history and compatibility notes
+- [SPEC.md](SPEC.md) "” The normative specification (what contracts look like, assertion operators, report format)
+- [ROADMAP.md](ROADMAP.md) "” Implementation status and future plans
+- [CHANGELOG.md](CHANGELOG.md) "” Version history and compatibility notes
 
 ## Executors
 

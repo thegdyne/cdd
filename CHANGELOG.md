@@ -1,16 +1,41 @@
 # Changelog
 All notable changes to the CDD spec and tooling.
 
+## [1.1.3] - 2025-12-28
+
+### Fixed
+- Interpolate variables in shell command arguments
+
+### Compatibility
+- **No behavior change** — fixes variable expansion to work as documented
+
+## [1.1.2] - 2025-12-28
+
+### Fixed
+- Fix repo_root detection when passing single contract file
+
+### Compatibility
+- **No behavior change** — bug fix only
+
+## [1.1.1] - 2025-12-27
+
+### Added
+- Native static file scanning wired into runner
+- Expanded README with full usage guide
+
+### Compatibility
+- **Additive, backwards compatible**
+
 ## [1.1.0] - 2025-12-27
 
 ### Added
-- `cdd_spec` field in project contracts — required for `status: frozen`, optional for `draft`
+- `cdd_spec` field in project contracts "” required for `status: frozen`, optional for `draft`
 - Version compatibility checking in tooling (major mismatch = error, else warn)
 - `--require-exact-spec` flag for strict version enforcement
-- **Native static file scanning** — `type: static` tests with `files:` glob support
-- `not_matches` operator — inverse of `matches` for regex lint checks
-- `pattern` field on assertions — alternative to `expected` for regex operators
-- `message` field on assertions — user-provided context for failure reporting
+- **Native static file scanning** "” `type: static` tests with `files:` glob support
+- `not_matches` operator "” inverse of `matches` for regex lint checks
+- `pattern` field on assertions "” alternative to `expected` for regex operators
+- `message` field on assertions "” user-provided context for failure reporting
 - `{var}` interpolation in `files:` globs (in addition to `$.vars.X`)
 - File/line/col/snippet details in static assertion failures
 
@@ -20,10 +45,10 @@ All notable changes to the CDD spec and tooling.
 - Static executor now supports file scanning via `run_static_test()`
 
 ### Compatibility
-- **Additive, backwards compatible** — existing contracts continue to work
+- **Additive, backwards compatible** "” existing contracts continue to work
 - New static scanning features are opt-in via `type: static` + `files:`
 
-- **Additive, backwards compatible** — existing draft contracts continue to work
+- **Additive, backwards compatible** "” existing draft contracts continue to work
 - Frozen contracts without `cdd_spec` will trigger a warning
 
 ## [1.0.14] - 2025-12-27
@@ -38,7 +63,7 @@ All notable changes to the CDD spec and tooling.
 ## [1.0.13] - 2025-12-27
 
 ### Fixed
-- `±` encoding issue in spec
+- `Â±` encoding issue in spec
 - Added `$.env.os_family` for clean platform skip logic
 
 ### Compatibility
