@@ -151,14 +151,11 @@ See [SPEC.md](SPEC.md#appendix-anti-patterns) for detailed examples.
 
 ---
 
-## Installation
+## Tooling
 
+Reference implementation: **[cdd-tooling](https://github.com/thegdyne/cdd-tooling)**
 ```bash
-# Via pipx (recommended for CLI)
-pipx install git+https://github.com/thegdyne/cdd.git@v1.1.5
-
-# Via pip
-pip install git+https://github.com/thegdyne/cdd.git@v1.1.5
+pip install cdd-tooling
 ```
 
 Verify:
