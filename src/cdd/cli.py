@@ -18,6 +18,7 @@ from cdd.executors.registry import ExecutorRegistry
 from cdd.lint import lint_contracts
 from cdd.runner import ContractRunner
 from cdd.spec import get_tool_version, load_spec_text
+from cdd.analyze import analyze_source
 
 console = Console()
 
@@ -54,6 +55,18 @@ def main(argv: Optional[List[str]] = None) -> int:
     p_cov.add_argument("--json", action="store_true", help="Emit machine-readable JSON")
     p_cov.add_argument("--strict", action="store_true", help="Exit non-zero if uncovered requirements exist")
 
+    # cdd analyze (NEW - Source-First CDD)
+    p_analyze = sub.add_parser("analyze", help="Analyze source artifacts for evidence-based contracts")
+    p_analyze.add_argument("source", help="Source file to analyze (PDF, image)")
+    p_analyze.add_argument("--output", "-o", default="analysis/", help="Output directory for analysis artifacts")
+    p_analyze.add_argument("--json", action="store_true", help="Emit machine-readable JSON summary")
+
+    # cdd compare (NEW - Compare two analyses)
+    p_compare = sub.add_parser("compare", help="Compare two PDF analyses (original vs generated)")
+    p_compare.add_argument("original", help="Original analysis directory or structure.json")
+    p_compare.add_argument("generated", help="Generated analysis directory or structure.json")
+    p_compare.add_argument("--json", action="store_true", help="Emit machine-readable JSON")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "spec":
@@ -64,6 +77,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         return cmd_test(args)
     if args.cmd == "coverage":
         return cmd_coverage(args)
+    if args.cmd == "analyze":
+        return cmd_analyze(args)
+    if args.cmd == "compare":
+        return cmd_compare(args)
 
     parser.print_help()
     return 2
@@ -117,6 +134,102 @@ def cmd_coverage(args: argparse.Namespace) -> int:
     if args.strict and cov["uncovered_count"] > 0:
         return 1
     return 0
+
+
+def cmd_analyze(args: argparse.Namespace) -> int:
+    """Analyze source artifacts for evidence-based contracts."""
+    source_path = Path(args.source)
+    output_dir = Path(args.output)
+    
+    if not source_path.exists():
+        console.print(f"[red]Error: Source not found: {source_path}[/red]")
+        return 1
+    
+    try:
+        console.print(f"Analyzing: [bold]{source_path}[/bold]")
+        result = analyze_source(source_path, output_dir)
+        
+        if args.json:
+            console.print_json(json.dumps(result))
+        else:
+            _print_analysis(result)
+        
+        return 0
+    except ImportError as e:
+        console.print(f"[red]Missing dependency: {e}[/red]")
+        console.print("Install with: pip install pymupdf")
+        return 1
+    except Exception as e:
+        console.print(f"[red]Analysis failed: {e}[/red]")
+        return 1
+
+
+def cmd_compare(args: argparse.Namespace) -> int:
+    """Compare two PDF analyses."""
+    from cdd.analyze.pdf import compare_analyses
+    
+    def load_analysis(path_str: str) -> Dict[str, Any]:
+        p = Path(path_str)
+        if p.is_dir():
+            p = p / "structure.json"
+        if not p.exists():
+            raise FileNotFoundError(f"Not found: {p}")
+        return json.loads(p.read_text())
+    
+    try:
+        original = load_analysis(args.original)
+        generated = load_analysis(args.generated)
+    except FileNotFoundError as e:
+        console.print(f"[red]Error: {e}[/red]")
+        return 1
+    
+    diff = compare_analyses(original, generated)
+    
+    if args.json:
+        console.print_json(json.dumps(diff))
+    else:
+        _print_comparison(diff, original, generated)
+    
+    # Return 1 if there are mismatches
+    has_issues = not diff["page_size_match"] or any(
+        not v["match"] for v in diff["element_counts"].values()
+    )
+    return 1 if has_issues else 0
+
+
+def _print_comparison(diff: Dict[str, Any], original: Dict[str, Any], generated: Dict[str, Any]) -> None:
+    """Print comparison results."""
+    console.print(Panel("[bold]PDF Comparison: Original vs Generated[/bold]"))
+    
+    # Page size
+    if diff["page_size_match"]:
+        console.print("[green]✓[/green] Page size matches")
+    else:
+        ps = diff.get("page_size_diff", {})
+        console.print(f"[red]✗[/red] Page size mismatch: {ps.get('original')} vs {ps.get('generated')}")
+    
+    # Element counts
+    t = Table(title="Element Counts")
+    t.add_column("Type")
+    t.add_column("Original", justify="right")
+    t.add_column("Generated", justify="right")
+    t.add_column("Match")
+    
+    for el_type, counts in diff["element_counts"].items():
+        status = "[green]✓[/green]" if counts["match"] else "[red]✗[/red]"
+        t.add_row(
+            el_type,
+            str(counts["original"]),
+            str(counts["generated"]),
+            status
+        )
+    console.print(t)
+    
+    # Layout summary
+    if "layout" in original:
+        orig_fields = len(original.get("layout", {}).get("form_fields", []))
+        gen_fields = len(generated.get("layout", {}).get("form_fields", []))
+        console.print(f"\nForm fields detected: Original={orig_fields}, Generated={gen_fields}")
 
 
 def cmd_test(args: argparse.Namespace) -> int:
@@ -195,6 +308,52 @@ def _print_coverage(cov: Dict[str, Any]) -> None:
         )
     console.print(t)
     console.print(f"Uncovered: {cov['uncovered_count']}")
+
+
+def _print_analysis(result: Dict[str, Any]) -> None:
+    """Print analysis results in human-readable format."""
+    summary = result.get("summary", {})
+    
+    body = Table(show_header=False, box=None)
+    body.add_row("Source", result.get("source_name", ""))
+    body.add_row("Type", result.get("type", ""))
+    body.add_row("Pages", str(result.get("page_count", 0)))
+    body.add_row("Total elements", str(summary.get("total_elements", 0)))
+    body.add_row("  Rectangles", str(summary.get("rectangles", 0)))
+    body.add_row("  Lines", str(summary.get("lines", 0)))
+    body.add_row("  Text blocks", str(summary.get("text_blocks", 0)))
+    body.add_row("Output", result.get("output_dir", ""))
+    console.print(Panel(body, title="[bold green]CDD Analyze[/bold green]"))
+    
+    # Show pages with element counts
+    for page in result.get("pages", []):
+        elements = page.get("elements", [])
+        rects = sum(1 for e in elements if e["type"] == "rectangle")
+        texts = sum(1 for e in elements if e["type"] == "text")
+        console.print(f"  Page {page['page']}: {len(elements)} elements ({rects} rects, {texts} text)")
+    
+    # Show layout issues if any
+    layout = result.get("layout", {})
+    overlaps = layout.get("overlaps", [])
+    if overlaps:
+        console.print()
+        console.print(f"[bold yellow]⚠️  {len(overlaps)} layout issue(s) detected:[/bold yellow]")
+        for o in overlaps[:5]:  # Show first 5
+            severity_color = "red" if o["severity"] == "error" else "yellow"
+            console.print(f"  [{severity_color}]• Page {o['page']}: {o['description']}[/{severity_color}]")
+        if len(overlaps) > 5:
+            console.print(f"  [dim]... and {len(overlaps) - 5} more (see layout.md)[/dim]")
+    
+    # Hint for next steps
+    console.print()
+    console.print("[dim]Next steps:[/dim]")
+    console.print(f"  1. Review [bold]{result.get('output_dir')}/elements.md[/bold] for element catalog")
+    if overlaps:
+        console.print(f"  2. Review [bold]{result.get('output_dir')}/layout.md[/bold] for issue details")
+        console.print(f"  3. Fix layout issues and re-analyze")
+    else:
+        console.print(f"  2. Reference elements in contracts with [bold]source_ref: SRC001#element_id[/bold]")
+        console.print(f"  3. Run [bold]cdd validate[/bold] to check source references")
 
 
 def _print_report(report: Dict[str, Any]) -> None:

@@ -1,7 +1,7 @@
 ---
 doc_status: frozen
-doc_version: 1.1.3
-date: 2025-12-28
+doc_version: 1.1.4
+date: 2025-12-29
 reviewers: [AI1, AI2]
 ---
 
@@ -11,10 +11,11 @@ reviewers: [AI1, AI2]
 
 A software development methodology where:
 
-1. **The contract is the goal** — Before any code, define what success looks like
-2. **Tests are embedded** — The contract carries its own verification
-3. **Output is diagnostic** — Test results show actual vs expected with full context
-4. **Iteration is fast** — Run tests, see failures, apply fixes, repeat
+1. **Analysis precedes contracts** — Understand the reference artifact before defining requirements
+2. **The contract is the goal** — Before any code, define what success looks like
+3. **Tests are embedded** — The contract carries its own verification
+4. **Output is diagnostic** — Test results show actual vs expected with full context
+5. **Iteration is fast** — Run tests, see failures, apply fixes, repeat
 
 This applies to any software project.
 
@@ -24,6 +25,9 @@ This applies to any software project.
 
 | Term | Definition |
 |------|------------|
+| **Reference** | The artifact that defines success (PDF, mockup, audio file, API spec, sketch) |
+| **Analysis** | Tool-generated micro-detail extraction from an artifact |
+| **Baseline** | Analysis output from reference; the measurable target |
 | **Contract** | YAML file containing spec + requirements + tests |
 | **Run** | Single execution of a contract's tests (context + results + artifacts) |
 | **Report** | JSON output from a run |
@@ -55,6 +59,15 @@ This applies to any software project.
 
 ```
     +---------------------------------------+
+    |        REFERENCE ANALYSIS             |
+    |                                       |
+    |  What artifact defines success?       |
+    |  What tool extracts micro-detail?     |
+    |  Baseline = tool output on reference  |
+    +---------------------------------------+
+                      |
+                      v
+    +---------------------------------------+
     |           PROJECT CONTRACT            |
     |                                       |
     |  What are we building?                |
@@ -78,6 +91,15 @@ This applies to any software project.
     |  Build against contracts              |
     |  Run tests continuously               |
     |  Paste failures -> get fixes          |
+    +---------------------------------------+
+                      |
+                      v
+    +---------------------------------------+
+    |       COMPARE OUTPUT TO BASELINE      |
+    |                                       |
+    |  Same tool on output vs reference     |
+    |  Deviations = precise feedback        |
+    |  Iterate until acceptable             |
     +---------------------------------------+
                       |
                       v
@@ -1738,6 +1760,12 @@ matrix:
 ## Changelog
 
 
+- **1.1.4** (2025-12-29): Analysis-first methodology — `No behavior change`
+  - Added "Analysis precedes contracts" as first principle in What section
+  - Added Reference, Analysis, Baseline to Glossary
+  - Updated The Model diagram to include Reference Analysis and Compare phases
+  - Clarifies process without changing contract schema or tooling behavior
+
 - **1.1.3** (2025-12-28): Shell variable interpolation — `No behavior change`
   - Interpolate variables in shell command arguments (bug fix)
 
@@ -1926,4 +1954,4 @@ The following sections constitute the Normative Core:
 
 ---
 
-*Version 1.1.3 — Frozen. Reviewed and approved by AI1 and AI2.*
+*Version 1.1.4 — Frozen. Reviewed and approved by AI1 and AI2.*

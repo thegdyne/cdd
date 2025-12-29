@@ -1,17 +1,117 @@
 # Contract-Driven Development (CDD)
 
-A methodology where you write the spec and tests first, then build the implementation to pass them.
+A methodology where analysis comes first, then contracts, then implementation.
 
 ## What is CDD?
 
-CDD inverts the typical development flow:
+CDD enforces a disciplined development flow:
 
-1. **Write a contract** "” Define requirements and tests in YAML before writing code
-2. **Implement against it** "” Build code that makes the tests pass
-3. **Iterate with feedback** "” Run tests, see failures with full context, fix, repeat
-4. **Freeze when stable** "” Lock the contract, changes require version bumps
+1. **Analyze the reference** — Before anything, get micro-detail perception of what you're building toward
+2. **Write a contract** — Define requirements and tests grounded in the analysis
+3. **Implement against it** — Build code that makes the tests pass
+4. **Compare output to baseline** — Same analysis tool on output vs reference
+5. **Iterate with precision** — Deviations are exact, fixes are targeted
+6. **Freeze when stable** — Lock the contract, changes require version bumps
 
-The contract is the source of truth. The code exists to fulfill it.
+The analysis is the foundation. The contract references it. The implementation fulfills it.
+
+---
+
+## Phase 0: The Hard Gate
+
+**Before any implementation begins, you must have:**
+
+| Requirement | Question |
+|-------------|----------|
+| Reference artifact | What existing thing defines success? (PDF, mockup, audio file, API spec, sketch) |
+| Analysis tool | What tool gives micro-detail perception of that artifact? |
+| Baseline | What does the tool output when run on the reference? |
+| Agreement | Human confirms the tool captures what matters |
+
+**No reference + No tool = No implementation**
+
+If a reference doesn't exist, create one (wireframe, sketch, example file). If a tool doesn't exist, build one first. CDD doesn't proceed without this foundation.
+
+### Why the hard gate?
+
+Human descriptions are imprecise:
+- "The spacing looks off" → Which spacing? By how much?
+- "Match the original form" → What are the exact dimensions?
+- "Make it sound warm" → What frequencies? What characteristics?
+
+Analysis tools provide precision:
+- "Element R2_5 at (418, 523) is 127x21pt"
+- "Spacing between rows is 15pt"
+- "Spectral centroid at 1.2kHz, RMS at -18dB"
+
+This precision eliminates guesswork and enables targeted iteration.
+
+---
+
+## The Development Loop
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Reference ──► Analyze ──► Baseline                        │
+│       │                         │                           │
+│       │                         ▼                           │
+│       │                   Write Contract                    │
+│       │                         │                           │
+│       │                         ▼                           │
+│       │                    Implement                        │
+│       │                         │                           │
+│       │                         ▼                           │
+│       │              Analyze Output ──► Compare             │
+│       │                                    │                │
+│       │                         ┌─────────┴─────────┐       │
+│       │                         │                   │       │
+│       │                    Deviations?          Match?      │
+│       │                         │                   │       │
+│       │                         ▼                   ▼       │
+│       │                   Fix & Iterate         Done        │
+│       │                         │                           │
+│       └─────────────────────────┘                           │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+1. **Analyze reference** — Tool extracts structure at micro-detail level
+2. **Baseline** — Tool output becomes the spec
+3. **Contract** — Requirements reference specific baseline values
+4. **Implement** — Build toward the contract
+5. **Analyze output** — Same tool on what you built
+6. **Compare** — Deviations from baseline are the feedback
+7. **Iterate** — Fix specific deviations until acceptable
+8. **Done** — Human signs off
+
+---
+
+## Collaboration Model
+
+CDD is a collaboration between human and AI:
+
+| Role | Human | Claude |
+|------|-------|--------|
+| Reference | Provides or locates | Analyzes at micro-detail |
+| Tooling | Signs off that it captures what matters | Creates/runs analysis |
+| Calibration | Sets acceptable thresholds | Reports exact deviations |
+| Direction | Decides what's important | Provides precision |
+| Signoff | Final approval | Reports readiness |
+
+**Neither works alone:**
+- Claude without tooling = guessing from descriptions
+- Human without Claude's analysis = imprecise feedback
+- Together = spec emerges from dialogue
+
+**The negotiation:**
+1. Claude analyzes, reports what it sees
+2. Human confirms or adjusts ("focus on X, ignore Y")
+3. Claude re-analyzes with calibration
+4. Both agree on what "done" means
+5. Implementation proceeds with shared understanding
+
+---
 
 ## Installation
 
@@ -30,22 +130,38 @@ cdd spec --version
 # 1.1.3
 ```
 
+---
+
 ## Using CDD in Your Project
 
-### 1. Create a project contract
+### 1. Analyze your reference (Phase 0)
+
+Before writing contracts, establish the baseline:
+
+```bash
+# Example: analyzing a PDF reference
+cdd analyze reference/original-form.pdf -o analysis/baseline/
+
+# Review what was captured
+cat analysis/baseline/elements.md
+```
+
+Confirm the analysis captures what matters. If not, improve the tool or adjust its parameters.
+
+### 2. Create a project contract
 
 ```yaml
 # my-project/contracts/project.yaml
 project: my-project
-cdd_spec: 1.1.3          # Locks to this CDD spec version
+cdd_spec: 1.1.3
 version: 1.0.0
-status: draft            # draft | frozen | deprecated
+status: draft
 
 goal: |
   What you're building and why.
 
 success_criteria:
-  - Criterion 1
+  - Criterion 1 (reference: baseline analysis)
   - Criterion 2
 
 components:
@@ -53,7 +169,9 @@ components:
   - component_b
 ```
 
-### 2. Write component contracts
+### 3. Write component contracts
+
+Ground requirements in baseline values:
 
 ```yaml
 # my-project/contracts/component_a.yaml
@@ -71,13 +189,14 @@ runner:
 requirements:
   - id: R001
     priority: must
-    description: Does the thing
+    description: Input fields match reference dimensions
     acceptance_criteria:
-      - Returns expected output
+      - Field height 21pt (from baseline element R1_0)
+      - Field width within 2pt of reference
 
 tests:
   - id: T001
-    name: does_the_thing
+    name: field_dimensions_match
     requirement: R001
     type: unit
     steps:
@@ -85,48 +204,40 @@ tests:
         with: { input: "test" }
         save_as: result
     assert:
-      - op: eq
-        actual: $.result.value
-        expected: "expected_output"
+      - op: approx
+        actual: $.result.field_height
+        expected: 21
+        tolerance: 1
 ```
 
-### 3. Run the tools
+### 4. Implement and compare
 
 ```bash
-# Validate contracts (schema + requirement coverage)
-cdd lint contracts/
-
 # Run tests
 cdd test contracts/
 
-# Check requirement coverage
-cdd coverage contracts/
+# Analyze your output
+cdd analyze output/generated.pdf -o analysis/output/
+
+# Compare to baseline
+cdd compare analysis/baseline/ analysis/output/
 ```
 
-### 4. Implement until green
+### 5. Iterate until deviations are acceptable
 
-Write code in `src/component_a.py` that makes `cdd test` pass. The test output shows exactly what failed and why.
+The comparison shows exact deviations:
+```
+✗ Element spacing: baseline 15pt, output 12pt (deviation: 3pt)
+✓ Field dimensions: match within tolerance
+```
 
-### 5. Freeze when stable
+Fix specific issues. Re-run. Repeat until clean or within agreed tolerance.
 
-Change `status: draft` â†’ `status: frozen` in your contracts. Now any changes require a version bump.
+### 6. Freeze when stable
 
-## Version Compatibility
+Change `status: draft` → `status: frozen` in your contracts. Now any changes require a version bump.
 
-The `cdd_spec` field in your project contract declares which CDD spec version you're targeting.
-
-| Scenario | Behavior |
-|----------|----------|
-| Major mismatch (project: 2.x, tool: 1.x) | **Error** "” incompatible |
-| Minor/patch mismatch | **Warning** "” should be compatible |
-| Exact match required | Use `--require-exact-spec` flag |
-
-When CDD releases a new version:
-
-1. Review the [CHANGELOG](CHANGELOG.md)
-2. Update your tooling: `pipx upgrade cdd` or reinstall with new tag
-3. Update `cdd_spec` in your project contract
-4. Run tests to verify compatibility
+---
 
 ## CLI Reference
 
@@ -137,46 +248,73 @@ cdd spec --version
 # Print full spec text
 cdd spec --print
 
+# Analyze source artifacts
+cdd analyze <source> -o <output-dir>
+cdd analyze reference.pdf -o analysis/baseline/
+
+# Compare two analyses
+cdd compare <baseline-dir> <output-dir>
+cdd compare analysis/baseline/ analysis/output/
+
 # Lint contracts (exits 1 if errors)
 cdd lint contracts/
-cdd lint contracts/component_a.yaml
-cdd lint contracts/ --strict        # Treat warnings as errors
-cdd lint contracts/ --json          # Machine-readable output
+cdd lint contracts/ --strict
+cdd lint contracts/ --json
 
 # Run tests (exits 1 if failures)
 cdd test contracts/
-cdd test contracts/ --var target=foo        # Inject variable
-cdd test contracts/ --only T001 --only T002 # Run specific tests
-cdd test contracts/ --require-exact-spec    # Strict version check
-cdd test contracts/ --json                  # Machine-readable report
+cdd test contracts/ --var target=foo
+cdd test contracts/ --only T001
+cdd test contracts/ --json
 
-# Coverage report (exits 0 unless --strict)
+# Coverage report
 cdd coverage contracts/
-cdd coverage contracts/ --strict    # Exit 1 if uncovered requirements
-cdd coverage contracts/ --json
+cdd coverage contracts/ --strict
 ```
+
+---
 
 ## Project Structure
 
-Recommended layout for a CDD-based project:
+Recommended layout:
 
 ```
 my-project/
-â”œâ”€â”€ contracts/
-â”‚   â”œâ”€â”€ project.yaml        # Project contract (required)
-â”‚   â”œâ”€â”€ component_a.yaml    # Component contracts
-â”‚   â””â”€â”€ component_b.yaml
-â”œâ”€â”€ src/
-â”‚   â”œâ”€â”€ component_a.py      # Implementation
-â”‚   â””â”€â”€ component_b.py
-â””â”€â”€ .cdd-version            # Optional fallback (if no cdd_spec in project.yaml)
+├── analysis/
+│   ├── baseline/           # Analysis of reference artifact
+│   └── output/             # Analysis of generated output
+├── reference/
+│   └── original.pdf        # The reference artifact
+├── contracts/
+│   ├── project.yaml
+│   └── component_a.yaml
+├── src/
+│   └── component_a.py
+└── output/
+    └── generated.pdf       # What you built
 ```
+
+---
+
+## Version Compatibility
+
+The `cdd_spec` field in your project contract declares which CDD spec version you're targeting.
+
+| Scenario | Behavior |
+|----------|----------|
+| Major mismatch (project: 2.x, tool: 1.x) | **Error** — incompatible |
+| Minor/patch mismatch | **Warning** — should be compatible |
+| Exact match required | Use `--require-exact-spec` flag |
+
+---
 
 ## Documentation
 
-- [SPEC.md](SPEC.md) "” The normative specification (what contracts look like, assertion operators, report format)
-- [ROADMAP.md](ROADMAP.md) "” Implementation status and future plans
-- [CHANGELOG.md](CHANGELOG.md) "” Version history and compatibility notes
+- [SPEC.md](SPEC.md) — The normative specification (contract schema, assertion operators, report format)
+- [ROADMAP.md](ROADMAP.md) — Implementation status and future plans
+- [CHANGELOG.md](CHANGELOG.md) — Version history and compatibility notes
+
+---
 
 ## Executors
 
@@ -188,6 +326,8 @@ CDD supports multiple executors for different languages/environments:
 | `shell` | `shell` | CLI tools, scripts |
 | `static` | (assertions only) | AST analysis |
 | `sclang` | `render_nrt` | SuperCollider audio |
+
+---
 
 ## License
 

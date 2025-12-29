@@ -1,0 +1,2390 @@
+{
+  "source": "/Users/garethmillar/Downloads/pyro-log-2025-12-28.pdf",
+  "source_name": "pyro-log-2025-12-28.pdf",
+  "type": "pdf",
+  "page_count": 2,
+  "pages": [
+    {
+      "page": 1,
+      "image": "page_1.png",
+      "width": 612.0,
+      "height": 792.0,
+      "elements": [
+        {
+          "id": "T1_0",
+          "type": "text",
+          "content": "JOINT INDUSTRY SFX GRADING SCHEME",
+          "is_label": true,
+          "bounds": {
+            "x": 165.6,
+            "y": 35.0,
+            "width": 281.6,
+            "height": 19.3,
+            "x2": 447.2,
+            "y2": 54.3
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 14.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_1",
+          "type": "text",
+          "content": "WEEKLY PYROTECHNIC WORK EXPERIENCE LOG",
+          "is_label": true,
+          "bounds": {
+            "x": 135.6,
+            "y": 55.0,
+            "width": 342.3,
+            "height": 19.3,
+            "x2": 477.8,
+            "y2": 74.3
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 14.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "R1_0",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 112.0,
+            "y": 100.0,
+            "width": 170.0,
+            "height": 21.0,
+            "x2": 282.0,
+            "y2": 121.0
+          },
+          "associated_label": "T1_2",
+          "label_text": "NAME:"
+        },
+        {
+          "id": "R1_1",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 488.0,
+            "y": 100.0,
+            "width": 62.0,
+            "height": 21.0,
+            "x2": 550.0,
+            "y2": 121.0
+          },
+          "associated_label": "T1_4",
+          "label_text": "DATE (end Sunday of week worked):"
+        },
+        {
+          "id": "T1_2",
+          "type": "text",
+          "content": "NAME:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 101.1,
+            "width": 38.0,
+            "height": 16.5,
+            "x2": 104.0,
+            "y2": 117.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_3",
+          "type": "text",
+          "content": "Gareth",
+          "is_label": true,
+          "bounds": {
+            "x": 115.0,
+            "y": 102.2,
+            "width": 33.6,
+            "height": 15.1,
+            "x2": 148.6,
+            "y2": 117.3
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 11.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_4",
+          "type": "text",
+          "content": "DATE (end Sunday of week worked):",
+          "is_label": true,
+          "bounds": {
+            "x": 290.0,
+            "y": 102.2,
+            "width": 181.0,
+            "height": 15.1,
+            "x2": 471.0,
+            "y2": 117.3
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 11.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_5",
+          "type": "text",
+          "content": "28/12/2025",
+          "is_label": false,
+          "bounds": {
+            "x": 491.0,
+            "y": 102.2,
+            "width": 55.0,
+            "height": 15.1,
+            "x2": 546.0,
+            "y2": 117.3
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 11.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_6",
+          "type": "text",
+          "content": "GRADE at which this work was carried out (put a cross in the appropriate box):",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 123.2,
+            "width": 383.3,
+            "height": 15.1,
+            "x2": 449.3,
+            "y2": 138.3
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 11.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_7",
+          "type": "text",
+          "content": "TRAINEE",
+          "is_label": true,
+          "bounds": {
+            "x": 120.0,
+            "y": 142.1,
+            "width": 52.0,
+            "height": 16.5,
+            "x2": 172.0,
+            "y2": 158.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_9",
+          "type": "text",
+          "content": "TECHNICIAN",
+          "is_label": true,
+          "bounds": {
+            "x": 250.0,
+            "y": 142.1,
+            "width": 73.3,
+            "height": 16.5,
+            "x2": 323.3,
+            "y2": 158.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_10",
+          "type": "text",
+          "content": "SENIOR TECHNICIAN",
+          "is_label": true,
+          "bounds": {
+            "x": 400.0,
+            "y": 142.1,
+            "width": 122.7,
+            "height": 16.5,
+            "x2": 522.7,
+            "y2": 158.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_8",
+          "type": "text",
+          "content": "X",
+          "is_label": true,
+          "bounds": {
+            "x": 142.5,
+            "y": 161.3,
+            "width": 6.7,
+            "height": 13.8,
+            "x2": 149.2,
+            "y2": 175.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "R1_2",
+          "type": "rectangle",
+          "classification": "checkbox",
+          "bounds": {
+            "x": 140.0,
+            "y": 163.0,
+            "width": 11.5,
+            "height": 11.5,
+            "x2": 151.5,
+            "y2": 174.5
+          },
+          "associated_label": "T1_8",
+          "label_text": "X"
+        },
+        {
+          "id": "R1_3",
+          "type": "rectangle",
+          "classification": "checkbox",
+          "bounds": {
+            "x": 270.0,
+            "y": 163.0,
+            "width": 11.5,
+            "height": 11.5,
+            "x2": 281.5,
+            "y2": 174.5
+          },
+          "associated_label": "T1_9",
+          "label_text": "TECHNICIAN"
+        },
+        {
+          "id": "R1_4",
+          "type": "rectangle",
+          "classification": "checkbox",
+          "bounds": {
+            "x": 420.0,
+            "y": 163.0,
+            "width": 11.5,
+            "height": 11.5,
+            "x2": 431.5,
+            "y2": 174.5
+          },
+          "associated_label": "T1_10",
+          "label_text": "SENIOR TECHNICIAN"
+        },
+        {
+          "id": "R1_5",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 315.0,
+            "y": 195.0,
+            "width": 235.0,
+            "height": 21.0,
+            "x2": 550.0,
+            "y2": 216.0
+          },
+          "associated_label": "T1_11",
+          "label_text": "NAME OF PRODUCTION COMPANY:"
+        },
+        {
+          "id": "T1_11",
+          "type": "text",
+          "content": "NAME OF PRODUCTION COMPANY:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 196.1,
+            "width": 206.0,
+            "height": 16.5,
+            "x2": 272.0,
+            "y2": 212.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_12",
+          "type": "text",
+          "content": "Gdyne Systems",
+          "is_label": true,
+          "bounds": {
+            "x": 318.0,
+            "y": 197.2,
+            "width": 77.6,
+            "height": 15.1,
+            "x2": 395.6,
+            "y2": 212.3
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 11.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R1_6",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 315.0,
+            "y": 223.0,
+            "width": 235.0,
+            "height": 21.0,
+            "x2": 550.0,
+            "y2": 244.0
+          },
+          "associated_label": "T1_13",
+          "label_text": "FILM/PROGRAMME TITLE:"
+        },
+        {
+          "id": "T1_13",
+          "type": "text",
+          "content": "FILM/PROGRAMME TITLE:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 224.1,
+            "width": 150.0,
+            "height": 16.5,
+            "x2": 216.0,
+            "y2": 240.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_14",
+          "type": "text",
+          "content": "zombies from space",
+          "is_label": true,
+          "bounds": {
+            "x": 318.0,
+            "y": 225.2,
+            "width": 98.4,
+            "height": 15.1,
+            "x2": 416.4,
+            "y2": 240.3
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 11.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R1_7",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 315.0,
+            "y": 251.0,
+            "width": 235.0,
+            "height": 21.0,
+            "x2": 550.0,
+            "y2": 272.0
+          },
+          "associated_label": "T1_15",
+          "label_text": "COUNTRY WORKING IN:"
+        },
+        {
+          "id": "T1_15",
+          "type": "text",
+          "content": "COUNTRY WORKING IN:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 252.1,
+            "width": 140.0,
+            "height": 16.5,
+            "x2": 206.0,
+            "y2": 268.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_16",
+          "type": "text",
+          "content": "uk",
+          "is_label": true,
+          "bounds": {
+            "x": 318.0,
+            "y": 253.2,
+            "width": 11.6,
+            "height": 15.1,
+            "x2": 329.6,
+            "y2": 268.3
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 11.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R1_8",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 315.0,
+            "y": 279.0,
+            "width": 235.0,
+            "height": 21.0,
+            "x2": 550.0,
+            "y2": 300.0
+          },
+          "associated_label": "T1_17",
+          "label_text": "NAME OF PYROTECHNIC SUPERVISOR:"
+        },
+        {
+          "id": "T1_17",
+          "type": "text",
+          "content": "NAME OF PYROTECHNIC SUPERVISOR:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 280.1,
+            "width": 230.7,
+            "height": 16.5,
+            "x2": 296.7,
+            "y2": 296.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_18",
+          "type": "text",
+          "content": "huw millar",
+          "is_label": true,
+          "bounds": {
+            "x": 318.0,
+            "y": 281.2,
+            "width": 49.5,
+            "height": 15.1,
+            "x2": 367.5,
+            "y2": 296.3
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 11.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_19",
+          "type": "text",
+          "content": "DAYS INVOLVING PYROTECHNICS (place a cross in the appropriate boxes):",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 305.2,
+            "width": 382.7,
+            "height": 15.1,
+            "x2": 448.7,
+            "y2": 320.3
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 11.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R1_9",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 66.0,
+            "y": 332.0,
+            "width": 480.0,
+            "height": 18.0,
+            "x2": 546.0,
+            "y2": 350.0
+          }
+        },
+        {
+          "id": "T1_20",
+          "type": "text",
+          "content": "MON",
+          "is_label": true,
+          "bounds": {
+            "x": 88.6,
+            "y": 333.3,
+            "width": 23.3,
+            "height": 13.8,
+            "x2": 112.0,
+            "y2": 347.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_21",
+          "type": "text",
+          "content": "TUES",
+          "is_label": true,
+          "bounds": {
+            "x": 155.6,
+            "y": 333.3,
+            "width": 26.7,
+            "height": 13.8,
+            "x2": 182.3,
+            "y2": 347.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_22",
+          "type": "text",
+          "content": "WED",
+          "is_label": true,
+          "bounds": {
+            "x": 225.8,
+            "y": 333.3,
+            "width": 23.3,
+            "height": 13.8,
+            "x2": 249.2,
+            "y2": 347.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_23",
+          "type": "text",
+          "content": "THURS",
+          "is_label": true,
+          "bounds": {
+            "x": 288.9,
+            "y": 333.3,
+            "width": 34.4,
+            "height": 13.8,
+            "x2": 323.3,
+            "y2": 347.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_24",
+          "type": "text",
+          "content": "FRI",
+          "is_label": true,
+          "bounds": {
+            "x": 366.5,
+            "y": 333.3,
+            "width": 16.1,
+            "height": 13.8,
+            "x2": 382.6,
+            "y2": 347.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_25",
+          "type": "text",
+          "content": "SAT",
+          "is_label": true,
+          "bounds": {
+            "x": 433.2,
+            "y": 333.3,
+            "width": 20.0,
+            "height": 13.8,
+            "x2": 453.2,
+            "y2": 347.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_26",
+          "type": "text",
+          "content": "SUN",
+          "is_label": true,
+          "bounds": {
+            "x": 501.2,
+            "y": 333.3,
+            "width": 21.1,
+            "height": 13.8,
+            "x2": 522.3,
+            "y2": 347.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "R1_10",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 66.0,
+            "y": 350.0,
+            "width": 480.0,
+            "height": 20.0,
+            "x2": 546.0,
+            "y2": 370.0
+          },
+          "associated_label": "T1_20",
+          "label_text": "MON"
+        },
+        {
+          "id": "R1_11",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 66.0,
+            "y": 350.0,
+            "width": 68.6,
+            "height": 20.0,
+            "x2": 134.6,
+            "y2": 370.0
+          },
+          "associated_label": "T1_20",
+          "label_text": "MON"
+        },
+        {
+          "id": "R1_13",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 134.6,
+            "y": 350.0,
+            "width": 68.6,
+            "height": 20.0,
+            "x2": 203.1,
+            "y2": 370.0
+          },
+          "associated_label": "T1_20",
+          "label_text": "MON"
+        },
+        {
+          "id": "R1_15",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 203.1,
+            "y": 350.0,
+            "width": 68.6,
+            "height": 20.0,
+            "x2": 271.7,
+            "y2": 370.0
+          },
+          "associated_label": "T1_21",
+          "label_text": "TUES"
+        },
+        {
+          "id": "R1_17",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 271.7,
+            "y": 350.0,
+            "width": 68.6,
+            "height": 20.0,
+            "x2": 340.3,
+            "y2": 370.0
+          },
+          "associated_label": "T1_22",
+          "label_text": "WED"
+        },
+        {
+          "id": "R1_19",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 340.3,
+            "y": 350.0,
+            "width": 68.6,
+            "height": 20.0,
+            "x2": 408.9,
+            "y2": 370.0
+          },
+          "associated_label": "T1_24",
+          "label_text": "FRI"
+        },
+        {
+          "id": "R1_21",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 408.9,
+            "y": 350.0,
+            "width": 68.6,
+            "height": 20.0,
+            "x2": 477.4,
+            "y2": 370.0
+          },
+          "associated_label": "T1_24",
+          "label_text": "FRI"
+        },
+        {
+          "id": "R1_23",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 477.4,
+            "y": 350.0,
+            "width": 68.6,
+            "height": 20.0,
+            "x2": 546.0,
+            "y2": 370.0
+          },
+          "associated_label": "T1_25",
+          "label_text": "SAT"
+        },
+        {
+          "id": "T1_27",
+          "type": "text",
+          "content": "X",
+          "is_label": true,
+          "bounds": {
+            "x": 97.0,
+            "y": 352.3,
+            "width": 6.7,
+            "height": 13.8,
+            "x2": 103.7,
+            "y2": 366.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_28",
+          "type": "text",
+          "content": "X",
+          "is_label": true,
+          "bounds": {
+            "x": 371.3,
+            "y": 352.3,
+            "width": 6.7,
+            "height": 13.8,
+            "x2": 378.0,
+            "y2": 366.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "R1_12",
+          "type": "rectangle",
+          "classification": "checkbox",
+          "bounds": {
+            "x": 94.5,
+            "y": 354.0,
+            "width": 11.5,
+            "height": 11.5,
+            "x2": 106.0,
+            "y2": 365.5
+          },
+          "associated_label": "T1_27",
+          "label_text": "X"
+        },
+        {
+          "id": "R1_14",
+          "type": "rectangle",
+          "classification": "checkbox",
+          "bounds": {
+            "x": 163.1,
+            "y": 354.0,
+            "width": 11.5,
+            "height": 11.5,
+            "x2": 174.6,
+            "y2": 365.5
+          },
+          "associated_label": "T1_21",
+          "label_text": "TUES"
+        },
+        {
+          "id": "R1_16",
+          "type": "rectangle",
+          "classification": "checkbox",
+          "bounds": {
+            "x": 231.7,
+            "y": 354.0,
+            "width": 11.5,
+            "height": 11.5,
+            "x2": 243.2,
+            "y2": 365.5
+          },
+          "associated_label": "T1_22",
+          "label_text": "WED"
+        },
+        {
+          "id": "R1_18",
+          "type": "rectangle",
+          "classification": "checkbox",
+          "bounds": {
+            "x": 300.2,
+            "y": 354.0,
+            "width": 11.5,
+            "height": 11.5,
+            "x2": 311.8,
+            "y2": 365.5
+          },
+          "associated_label": "T1_23",
+          "label_text": "THURS"
+        },
+        {
+          "id": "R1_20",
+          "type": "rectangle",
+          "classification": "checkbox",
+          "bounds": {
+            "x": 368.8,
+            "y": 354.0,
+            "width": 11.5,
+            "height": 11.5,
+            "x2": 380.3,
+            "y2": 365.5
+          },
+          "associated_label": "T1_28",
+          "label_text": "X"
+        },
+        {
+          "id": "R1_22",
+          "type": "rectangle",
+          "classification": "checkbox",
+          "bounds": {
+            "x": 437.4,
+            "y": 354.0,
+            "width": 11.5,
+            "height": 11.5,
+            "x2": 448.9,
+            "y2": 365.5
+          },
+          "associated_label": "T1_25",
+          "label_text": "SAT"
+        },
+        {
+          "id": "R1_24",
+          "type": "rectangle",
+          "classification": "checkbox",
+          "bounds": {
+            "x": 506.0,
+            "y": 354.0,
+            "width": 11.5,
+            "height": 11.5,
+            "x2": 517.5,
+            "y2": 365.5
+          },
+          "associated_label": "T1_26",
+          "label_text": "SUN"
+        },
+        {
+          "id": "T1_29",
+          "type": "text",
+          "content": "Describe Effect required:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 372.1,
+            "width": 132.0,
+            "height": 16.5,
+            "x2": 198.0,
+            "y2": 388.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R1_25",
+          "type": "rectangle",
+          "classification": "text_area",
+          "bounds": {
+            "x": 66.0,
+            "y": 390.0,
+            "width": 480.0,
+            "height": 80.0,
+            "x2": 546.0,
+            "y2": 470.0
+          },
+          "associated_label": "T1_29",
+          "label_text": "Describe Effect required:"
+        },
+        {
+          "id": "T1_30",
+          "type": "text",
+          "content": "really cool ones",
+          "is_label": true,
+          "bounds": {
+            "x": 71.0,
+            "y": 391.2,
+            "width": 69.5,
+            "height": 13.7,
+            "x2": 140.5,
+            "y2": 405.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T1_31",
+          "type": "text",
+          "content": "Please state type, make and amount of explosives and pyrotechnics used:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 474.2,
+            "width": 328.5,
+            "height": 13.7,
+            "x2": 394.5,
+            "y2": 488.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R1_26",
+          "type": "rectangle",
+          "classification": "text_area",
+          "bounds": {
+            "x": 66.0,
+            "y": 490.0,
+            "width": 480.0,
+            "height": 120.0,
+            "x2": 546.0,
+            "y2": 610.0
+          },
+          "associated_label": "T1_31",
+          "label_text": "Please state type, make and amount of explosives and pyrotechnics used:"
+        },
+        {
+          "id": "T1_32",
+          "type": "text",
+          "content": "all the expensive big ones",
+          "is_label": true,
+          "bounds": {
+            "x": 71.0,
+            "y": 491.2,
+            "width": 115.1,
+            "height": 13.7,
+            "x2": 186.1,
+            "y2": 505.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        }
+      ]
+    },
+    {
+      "page": 2,
+      "image": "page_2.png",
+      "width": 612.0,
+      "height": 792.0,
+      "elements": [
+        {
+          "id": "T2_0",
+          "type": "text",
+          "content": "Describe in brief detail your involvement in handling the above explosives and the type",
+          "is_label": false,
+          "bounds": {
+            "x": 66.0,
+            "y": 37.1,
+            "width": 458.9,
+            "height": 16.5,
+            "x2": 524.9,
+            "y2": 53.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_1",
+          "type": "text",
+          "content": "of work carried out:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 51.1,
+            "width": 102.0,
+            "height": 16.5,
+            "x2": 168.0,
+            "y2": 67.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R2_0",
+          "type": "rectangle",
+          "classification": "text_area",
+          "bounds": {
+            "x": 66.0,
+            "y": 69.0,
+            "width": 480.0,
+            "height": 100.0,
+            "x2": 546.0,
+            "y2": 169.0
+          },
+          "associated_label": "T2_1",
+          "label_text": "of work carried out:"
+        },
+        {
+          "id": "T2_2",
+          "type": "text",
+          "content": "i let the pros do it",
+          "is_label": true,
+          "bounds": {
+            "x": 71.0,
+            "y": 70.2,
+            "width": 78.9,
+            "height": 13.7,
+            "x2": 149.9,
+            "y2": 84.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_3",
+          "type": "text",
+          "content": "I confirm that the above information is an accurate record of the applicants' pyrotechnic",
+          "is_label": false,
+          "bounds": {
+            "x": 66.0,
+            "y": 173.2,
+            "width": 384.3,
+            "height": 13.7,
+            "x2": 450.3,
+            "y2": 187.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_4",
+          "type": "text",
+          "content": "work for the week as dated above.",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 187.2,
+            "width": 152.3,
+            "height": 13.7,
+            "x2": 218.3,
+            "y2": 201.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R2_1",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 134.0,
+            "y": 223.0,
+            "width": 210.0,
+            "height": 21.0,
+            "x2": 344.0,
+            "y2": 244.0
+          },
+          "associated_label": "T2_5",
+          "label_text": "DATE:"
+        },
+        {
+          "id": "T2_5",
+          "type": "text",
+          "content": "DATE:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 226.2,
+            "width": 29.4,
+            "height": 13.7,
+            "x2": 95.4,
+            "y2": 240.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R2_2",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 134.0,
+            "y": 253.0,
+            "width": 210.0,
+            "height": 21.0,
+            "x2": 344.0,
+            "y2": 274.0
+          },
+          "associated_label": "T2_6",
+          "label_text": "SIGNED:"
+        },
+        {
+          "id": "T2_6",
+          "type": "text",
+          "content": "SIGNED:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 256.2,
+            "width": 41.1,
+            "height": 13.7,
+            "x2": 107.1,
+            "y2": 270.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_7",
+          "type": "text",
+          "content": "PYRO SUPERVISOR/SNR TECH",
+          "is_label": true,
+          "bounds": {
+            "x": 355.0,
+            "y": 256.2,
+            "width": 150.6,
+            "height": 13.7,
+            "x2": 505.6,
+            "y2": 270.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_8",
+          "type": "text",
+          "content": "(NOTE: Only valid when signed by an accredited Pyrotechnics Supervisor/Snr Tech*)",
+          "is_label": false,
+          "bounds": {
+            "x": 66.0,
+            "y": 267.2,
+            "width": 376.8,
+            "height": 13.7,
+            "x2": 442.8,
+            "y2": 281.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_9",
+          "type": "text",
+          "content": "COMMENTS:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 285.1,
+            "width": 73.3,
+            "height": 16.5,
+            "x2": 139.3,
+            "y2": 301.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R2_3",
+          "type": "rectangle",
+          "classification": "text_area",
+          "bounds": {
+            "x": 66.0,
+            "y": 303.0,
+            "width": 480.0,
+            "height": 60.0,
+            "x2": 546.0,
+            "y2": 363.0
+          },
+          "associated_label": "T2_9",
+          "label_text": "COMMENTS:"
+        },
+        {
+          "id": "T2_11",
+          "type": "text",
+          "content": "This is the only form that will be considered when you apply for re-",
+          "is_label": false,
+          "bounds": {
+            "x": 151.0,
+            "y": 367.2,
+            "width": 295.7,
+            "height": 13.7,
+            "x2": 446.7,
+            "y2": 381.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_10",
+          "type": "text",
+          "content": "To The Applicant:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 367.3,
+            "width": 84.4,
+            "height": 13.8,
+            "x2": 150.4,
+            "y2": 381.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_12",
+          "type": "text",
+          "content": "grading. Keep them clean and tidy in a loose-leaf binder. Photocopy this form if you",
+          "is_label": false,
+          "bounds": {
+            "x": 66.0,
+            "y": 379.2,
+            "width": 368.0,
+            "height": 13.7,
+            "x2": 434.0,
+            "y2": 393.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_13",
+          "type": "text",
+          "content": "require more copies, make sure you copy both sides onto",
+          "is_label": false,
+          "bounds": {
+            "x": 66.0,
+            "y": 391.2,
+            "width": 256.8,
+            "height": 13.7,
+            "x2": 322.8,
+            "y2": 405.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_15",
+          "type": "text",
+          "content": "sheet.",
+          "is_label": true,
+          "bounds": {
+            "x": 351.0,
+            "y": 391.2,
+            "width": 30.0,
+            "height": 13.7,
+            "x2": 381.0,
+            "y2": 405.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_14",
+          "type": "text",
+          "content": "one",
+          "is_label": true,
+          "bounds": {
+            "x": 336.0,
+            "y": 391.3,
+            "width": 17.8,
+            "height": 13.8,
+            "x2": 353.8,
+            "y2": 405.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_16",
+          "type": "text",
+          "content": "*If you are working for a Supervisor who is not registered by the Joint Industry SFX",
+          "is_label": false,
+          "bounds": {
+            "x": 66.0,
+            "y": 411.2,
+            "width": 365.7,
+            "height": 13.7,
+            "x2": 431.7,
+            "y2": 425.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_17",
+          "type": "text",
+          "content": "Grading Scheme then this form must also be signed by the Production Manager and 1st",
+          "is_label": false,
+          "bounds": {
+            "x": 66.0,
+            "y": 423.2,
+            "width": 388.5,
+            "height": 13.7,
+            "x2": 454.5,
+            "y2": 437.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_18",
+          "type": "text",
+          "content": "Assistant Director.",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 435.2,
+            "width": 81.1,
+            "height": 13.7,
+            "x2": 147.1,
+            "y2": 449.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_20",
+          "type": "text",
+          "content": "This form is important, you are signing",
+          "is_label": true,
+          "bounds": {
+            "x": 276.0,
+            "y": 455.2,
+            "width": 177.2,
+            "height": 13.7,
+            "x2": 453.3,
+            "y2": 469.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_19",
+          "type": "text",
+          "content": "*To Production Managers and 1st Assistant:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 455.3,
+            "width": 210.0,
+            "height": 13.8,
+            "x2": 276.0,
+            "y2": 469.1
+          },
+          "style": {
+            "font": "Helvetica-Bold",
+            "size": 10.0,
+            "bold": true,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_21",
+          "type": "text",
+          "content": "your confirmation that the pyrotechnic effect(s) referred to were carried out and that the",
+          "is_label": false,
+          "bounds": {
+            "x": 66.0,
+            "y": 467.2,
+            "width": 384.6,
+            "height": 13.7,
+            "x2": 450.6,
+            "y2": 481.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_22",
+          "type": "text",
+          "content": "named pyrotechnics operator worked in a safe manner.",
+          "is_label": false,
+          "bounds": {
+            "x": 66.0,
+            "y": 479.2,
+            "width": 244.5,
+            "height": 13.7,
+            "x2": 310.5,
+            "y2": 493.0
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 10.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R2_4",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 264.0,
+            "y": 515.0,
+            "width": 106.0,
+            "height": 21.0,
+            "x2": 370.0,
+            "y2": 536.0
+          },
+          "associated_label": "T2_24",
+          "label_text": "(print name):"
+        },
+        {
+          "id": "R2_5",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 418.0,
+            "y": 515.0,
+            "width": 127.0,
+            "height": 21.0,
+            "x2": 545.0,
+            "y2": 536.0
+          },
+          "associated_label": "T2_24",
+          "label_text": "(print name):"
+        },
+        {
+          "id": "T2_23",
+          "type": "text",
+          "content": "Production Manager",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 516.1,
+            "width": 108.0,
+            "height": 16.5,
+            "x2": 174.0,
+            "y2": 532.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_25",
+          "type": "text",
+          "content": "Signed:",
+          "is_label": true,
+          "bounds": {
+            "x": 380.0,
+            "y": 516.1,
+            "width": 40.7,
+            "height": 16.5,
+            "x2": 420.7,
+            "y2": 532.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_24",
+          "type": "text",
+          "content": "(print name):",
+          "is_label": true,
+          "bounds": {
+            "x": 166.0,
+            "y": 516.2,
+            "width": 68.0,
+            "height": 16.2,
+            "x2": 234.0,
+            "y2": 532.4
+          },
+          "style": {
+            "font": "Helvetica-Oblique",
+            "size": 12.0,
+            "bold": false,
+            "italic": true
+          }
+        },
+        {
+          "id": "R2_6",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 264.0,
+            "y": 543.0,
+            "width": 106.0,
+            "height": 21.0,
+            "x2": 370.0,
+            "y2": 564.0
+          },
+          "associated_label": "T2_27",
+          "label_text": "(print name):"
+        },
+        {
+          "id": "R2_7",
+          "type": "rectangle",
+          "classification": "input_field",
+          "bounds": {
+            "x": 418.0,
+            "y": 543.0,
+            "width": 127.0,
+            "height": 21.0,
+            "x2": 545.0,
+            "y2": 564.0
+          },
+          "associated_label": "T2_27",
+          "label_text": "(print name):"
+        },
+        {
+          "id": "T2_26",
+          "type": "text",
+          "content": "1st Assistant Director",
+          "is_label": false,
+          "bounds": {
+            "x": 66.0,
+            "y": 544.1,
+            "width": 113.4,
+            "height": 16.5,
+            "x2": 179.4,
+            "y2": 560.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_28",
+          "type": "text",
+          "content": "Signed:",
+          "is_label": true,
+          "bounds": {
+            "x": 380.0,
+            "y": 544.1,
+            "width": 40.7,
+            "height": 16.5,
+            "x2": 420.7,
+            "y2": 560.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "T2_27",
+          "type": "text",
+          "content": "(print name):",
+          "is_label": true,
+          "bounds": {
+            "x": 174.0,
+            "y": 544.2,
+            "width": 68.0,
+            "height": 16.2,
+            "x2": 242.0,
+            "y2": 560.4
+          },
+          "style": {
+            "font": "Helvetica-Oblique",
+            "size": 12.0,
+            "bold": false,
+            "italic": true
+          }
+        },
+        {
+          "id": "T2_29",
+          "type": "text",
+          "content": "COMMENTS:",
+          "is_label": true,
+          "bounds": {
+            "x": 66.0,
+            "y": 560.1,
+            "width": 73.3,
+            "height": 16.5,
+            "x2": 139.3,
+            "y2": 576.6
+          },
+          "style": {
+            "font": "Helvetica",
+            "size": 12.0,
+            "bold": false,
+            "italic": false
+          }
+        },
+        {
+          "id": "R2_8",
+          "type": "rectangle",
+          "classification": "signature_field",
+          "bounds": {
+            "x": 66.0,
+            "y": 578.0,
+            "width": 480.0,
+            "height": 50.0,
+            "x2": 546.0,
+            "y2": 628.0
+          },
+          "associated_label": "T2_29",
+          "label_text": "COMMENTS:"
+        },
+        {
+          "id": "T2_30",
+          "type": "text",
+          "content": "SM \u2013 November 2005",
+          "is_label": false,
+          "bounds": {
+            "x": 468.7,
+            "y": 761.4,
+            "width": 77.8,
+            "height": 10.8,
+            "x2": 546.5,
+            "y2": 772.3
+          },
+          "style": {
+            "font": "Helvetica-Oblique",
+            "size": 8.0,
+            "bold": false,
+            "italic": true
+          }
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_elements": 100,
+    "rectangles": 36,
+    "lines": 0,
+    "text_blocks": 64
+  },
+  "layout": {
+    "form_fields": [
+      {
+        "page": 1,
+        "label": "NAME:",
+        "label_id": "T1_2",
+        "field_id": "R1_0",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 112.0,
+          "y": 100.0,
+          "width": 170.0,
+          "height": 21.0,
+          "x2": 282.0,
+          "y2": 121.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "DATE (end Sunday of week worked):",
+        "label_id": "T1_4",
+        "field_id": "R1_1",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 488.0,
+          "y": 100.0,
+          "width": 62.0,
+          "height": 21.0,
+          "x2": 550.0,
+          "y2": 121.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "X",
+        "label_id": "T1_8",
+        "field_id": "R1_2",
+        "field_type": "checkbox",
+        "bounds": {
+          "x": 140.0,
+          "y": 163.0,
+          "width": 11.5,
+          "height": 11.5,
+          "x2": 151.5,
+          "y2": 174.5
+        }
+      },
+      {
+        "page": 1,
+        "label": "TECHNICIAN",
+        "label_id": "T1_9",
+        "field_id": "R1_3",
+        "field_type": "checkbox",
+        "bounds": {
+          "x": 270.0,
+          "y": 163.0,
+          "width": 11.5,
+          "height": 11.5,
+          "x2": 281.5,
+          "y2": 174.5
+        }
+      },
+      {
+        "page": 1,
+        "label": "SENIOR TECHNICIAN",
+        "label_id": "T1_10",
+        "field_id": "R1_4",
+        "field_type": "checkbox",
+        "bounds": {
+          "x": 420.0,
+          "y": 163.0,
+          "width": 11.5,
+          "height": 11.5,
+          "x2": 431.5,
+          "y2": 174.5
+        }
+      },
+      {
+        "page": 1,
+        "label": "NAME OF PRODUCTION COMPANY:",
+        "label_id": "T1_11",
+        "field_id": "R1_5",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 315.0,
+          "y": 195.0,
+          "width": 235.0,
+          "height": 21.0,
+          "x2": 550.0,
+          "y2": 216.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "FILM/PROGRAMME TITLE:",
+        "label_id": "T1_13",
+        "field_id": "R1_6",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 315.0,
+          "y": 223.0,
+          "width": 235.0,
+          "height": 21.0,
+          "x2": 550.0,
+          "y2": 244.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "COUNTRY WORKING IN:",
+        "label_id": "T1_15",
+        "field_id": "R1_7",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 315.0,
+          "y": 251.0,
+          "width": 235.0,
+          "height": 21.0,
+          "x2": 550.0,
+          "y2": 272.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "NAME OF PYROTECHNIC SUPERVISOR:",
+        "label_id": "T1_17",
+        "field_id": "R1_8",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 315.0,
+          "y": 279.0,
+          "width": 235.0,
+          "height": 21.0,
+          "x2": 550.0,
+          "y2": 300.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "MON",
+        "label_id": "T1_20",
+        "field_id": "R1_10",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 66.0,
+          "y": 350.0,
+          "width": 480.0,
+          "height": 20.0,
+          "x2": 546.0,
+          "y2": 370.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "MON",
+        "label_id": "T1_20",
+        "field_id": "R1_11",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 66.0,
+          "y": 350.0,
+          "width": 68.6,
+          "height": 20.0,
+          "x2": 134.6,
+          "y2": 370.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "MON",
+        "label_id": "T1_20",
+        "field_id": "R1_13",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 134.6,
+          "y": 350.0,
+          "width": 68.6,
+          "height": 20.0,
+          "x2": 203.1,
+          "y2": 370.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "TUES",
+        "label_id": "T1_21",
+        "field_id": "R1_15",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 203.1,
+          "y": 350.0,
+          "width": 68.6,
+          "height": 20.0,
+          "x2": 271.7,
+          "y2": 370.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "WED",
+        "label_id": "T1_22",
+        "field_id": "R1_17",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 271.7,
+          "y": 350.0,
+          "width": 68.6,
+          "height": 20.0,
+          "x2": 340.3,
+          "y2": 370.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "FRI",
+        "label_id": "T1_24",
+        "field_id": "R1_19",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 340.3,
+          "y": 350.0,
+          "width": 68.6,
+          "height": 20.0,
+          "x2": 408.9,
+          "y2": 370.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "FRI",
+        "label_id": "T1_24",
+        "field_id": "R1_21",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 408.9,
+          "y": 350.0,
+          "width": 68.6,
+          "height": 20.0,
+          "x2": 477.4,
+          "y2": 370.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "SAT",
+        "label_id": "T1_25",
+        "field_id": "R1_23",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 477.4,
+          "y": 350.0,
+          "width": 68.6,
+          "height": 20.0,
+          "x2": 546.0,
+          "y2": 370.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "X",
+        "label_id": "T1_27",
+        "field_id": "R1_12",
+        "field_type": "checkbox",
+        "bounds": {
+          "x": 94.5,
+          "y": 354.0,
+          "width": 11.5,
+          "height": 11.5,
+          "x2": 106.0,
+          "y2": 365.5
+        }
+      },
+      {
+        "page": 1,
+        "label": "TUES",
+        "label_id": "T1_21",
+        "field_id": "R1_14",
+        "field_type": "checkbox",
+        "bounds": {
+          "x": 163.1,
+          "y": 354.0,
+          "width": 11.5,
+          "height": 11.5,
+          "x2": 174.6,
+          "y2": 365.5
+        }
+      },
+      {
+        "page": 1,
+        "label": "WED",
+        "label_id": "T1_22",
+        "field_id": "R1_16",
+        "field_type": "checkbox",
+        "bounds": {
+          "x": 231.7,
+          "y": 354.0,
+          "width": 11.5,
+          "height": 11.5,
+          "x2": 243.2,
+          "y2": 365.5
+        }
+      },
+      {
+        "page": 1,
+        "label": "THURS",
+        "label_id": "T1_23",
+        "field_id": "R1_18",
+        "field_type": "checkbox",
+        "bounds": {
+          "x": 300.2,
+          "y": 354.0,
+          "width": 11.5,
+          "height": 11.5,
+          "x2": 311.8,
+          "y2": 365.5
+        }
+      },
+      {
+        "page": 1,
+        "label": "X",
+        "label_id": "T1_28",
+        "field_id": "R1_20",
+        "field_type": "checkbox",
+        "bounds": {
+          "x": 368.8,
+          "y": 354.0,
+          "width": 11.5,
+          "height": 11.5,
+          "x2": 380.3,
+          "y2": 365.5
+        }
+      },
+      {
+        "page": 1,
+        "label": "SAT",
+        "label_id": "T1_25",
+        "field_id": "R1_22",
+        "field_type": "checkbox",
+        "bounds": {
+          "x": 437.4,
+          "y": 354.0,
+          "width": 11.5,
+          "height": 11.5,
+          "x2": 448.9,
+          "y2": 365.5
+        }
+      },
+      {
+        "page": 1,
+        "label": "SUN",
+        "label_id": "T1_26",
+        "field_id": "R1_24",
+        "field_type": "checkbox",
+        "bounds": {
+          "x": 506.0,
+          "y": 354.0,
+          "width": 11.5,
+          "height": 11.5,
+          "x2": 517.5,
+          "y2": 365.5
+        }
+      },
+      {
+        "page": 1,
+        "label": "Describe Effect required:",
+        "label_id": "T1_29",
+        "field_id": "R1_25",
+        "field_type": "text_area",
+        "bounds": {
+          "x": 66.0,
+          "y": 390.0,
+          "width": 480.0,
+          "height": 80.0,
+          "x2": 546.0,
+          "y2": 470.0
+        }
+      },
+      {
+        "page": 1,
+        "label": "Please state type, make and amount of explosives and pyrotechnics used:",
+        "label_id": "T1_31",
+        "field_id": "R1_26",
+        "field_type": "text_area",
+        "bounds": {
+          "x": 66.0,
+          "y": 490.0,
+          "width": 480.0,
+          "height": 120.0,
+          "x2": 546.0,
+          "y2": 610.0
+        }
+      },
+      {
+        "page": 2,
+        "label": "of work carried out:",
+        "label_id": "T2_1",
+        "field_id": "R2_0",
+        "field_type": "text_area",
+        "bounds": {
+          "x": 66.0,
+          "y": 69.0,
+          "width": 480.0,
+          "height": 100.0,
+          "x2": 546.0,
+          "y2": 169.0
+        }
+      },
+      {
+        "page": 2,
+        "label": "DATE:",
+        "label_id": "T2_5",
+        "field_id": "R2_1",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 134.0,
+          "y": 223.0,
+          "width": 210.0,
+          "height": 21.0,
+          "x2": 344.0,
+          "y2": 244.0
+        }
+      },
+      {
+        "page": 2,
+        "label": "SIGNED:",
+        "label_id": "T2_6",
+        "field_id": "R2_2",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 134.0,
+          "y": 253.0,
+          "width": 210.0,
+          "height": 21.0,
+          "x2": 344.0,
+          "y2": 274.0
+        }
+      },
+      {
+        "page": 2,
+        "label": "COMMENTS:",
+        "label_id": "T2_9",
+        "field_id": "R2_3",
+        "field_type": "text_area",
+        "bounds": {
+          "x": 66.0,
+          "y": 303.0,
+          "width": 480.0,
+          "height": 60.0,
+          "x2": 546.0,
+          "y2": 363.0
+        }
+      },
+      {
+        "page": 2,
+        "label": "(print name):",
+        "label_id": "T2_24",
+        "field_id": "R2_4",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 264.0,
+          "y": 515.0,
+          "width": 106.0,
+          "height": 21.0,
+          "x2": 370.0,
+          "y2": 536.0
+        }
+      },
+      {
+        "page": 2,
+        "label": "(print name):",
+        "label_id": "T2_24",
+        "field_id": "R2_5",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 418.0,
+          "y": 515.0,
+          "width": 127.0,
+          "height": 21.0,
+          "x2": 545.0,
+          "y2": 536.0
+        }
+      },
+      {
+        "page": 2,
+        "label": "(print name):",
+        "label_id": "T2_27",
+        "field_id": "R2_6",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 264.0,
+          "y": 543.0,
+          "width": 106.0,
+          "height": 21.0,
+          "x2": 370.0,
+          "y2": 564.0
+        }
+      },
+      {
+        "page": 2,
+        "label": "(print name):",
+        "label_id": "T2_27",
+        "field_id": "R2_7",
+        "field_type": "input_field",
+        "bounds": {
+          "x": 418.0,
+          "y": 543.0,
+          "width": 127.0,
+          "height": 21.0,
+          "x2": 545.0,
+          "y2": 564.0
+        }
+      },
+      {
+        "page": 2,
+        "label": "COMMENTS:",
+        "label_id": "T2_29",
+        "field_id": "R2_8",
+        "field_type": "signature_field",
+        "bounds": {
+          "x": 66.0,
+          "y": 578.0,
+          "width": 480.0,
+          "height": 50.0,
+          "x2": 546.0,
+          "y2": 628.0
+        }
+      }
+    ],
+    "tables": [
+      {
+        "page": 1,
+        "y": 160,
+        "columns": 3,
+        "cell_ids": [
+          "R1_2",
+          "R1_3",
+          "R1_4"
+        ]
+      }
+    ],
+    "sections": []
+  }
+}
