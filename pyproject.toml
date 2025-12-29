@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cdd"
-version = "1.1.3"
+version = "1.1.5"
 description = "Contract-Driven Development spec + tooling"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "Your Name" }]
-keywords = ["contracts", "testing", "spec", "validation"]
+authors = [{ name = "Gareth Dyne" }]
+keywords = ["contracts", "testing", "spec", "validation", "cdd"]
 dependencies = [
   "pyyaml>=6.0.1",
   "jsonschema>=4.22.0",
@@ -23,6 +23,9 @@ dev = [
   "pytest>=8.2.0",
   "ruff>=0.6.0",
   "mypy>=1.11.0",
+]
+pdf = [
+  "pymupdf>=1.23.0",
 ]
 sclang = []
 

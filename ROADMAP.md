@@ -2,8 +2,28 @@
 
 Future additions to the Contract-Driven Development spec and tooling.
 
-**Applies to spec version:** 1.1.3  
-**Last updated:** 2025-12-28
+**Applies to spec version:** 1.1.5  
+**Last updated:** 2025-12-29
+
+---
+
+## Phase 0: Source-First Foundation
+
+| Item | Status | Notes |
+|------|--------|-------|
+| `cdd analyze` (PDF) | ✅ Done (v1.1.4) | PyMuPDF extracts images + structure |
+| `cdd analyze` (HTML) | ✅ Done (v1.1.5) | Element counts, CSS classes, required elements |
+| `cdd compare` | ✅ Done (v1.1.4) | Compare two analyses |
+| Mandatory Gates in spec | ✅ Done (v1.1.5) | G0-G3 definitions, sequence diagram |
+| Anti-Patterns in spec | ✅ Done (v1.1.5) | AP1-AP6 with examples |
+| Process Checkpoints | ✅ Done (v1.1.5) | Table of verification points |
+| `source_ref` field | 🔲 TODO | Links requirements to analysis elements |
+| `visual_ref` field | 🔲 TODO | Links to reference images |
+| `sources` in project | 🔲 TODO | Declare source artifacts in contract |
+| `cdd validate` command | 🔲 TODO | Check source_refs exist in analysis |
+| Assumption language lint | 🔲 TODO | Detect vague wording in requirements |
+
+**Goal:** You can't write a requirement until you've analyzed the source.
 
 ---
 
@@ -20,7 +40,7 @@ Future additions to the Contract-Driven Development spec and tooling.
 | Report file outputs | ✅ Done (v1.0.9) | File naming convention for matrix runs |
 | Report invariants | ✅ Done (v1.0.10) | Status values, assertions array, required fields |
 | AST stability note | ✅ Done (v1.0.10) | Only calls/bus_reads stable in v1.0 |
-| `contract-lint` | 🔲 TODO | Schema validation + requirement coverage |
+| `contract-lint` | ✅ Done | Schema validation + requirement coverage |
 | Python executor | 🔲 TODO | `call`, `call_n`, step envelope |
 | `sclang` executor | 🔲 TODO | `render_nrt` + metrics JSON output |
 | Static executor | 🔲 TODO | `sclang_ast` parser (MVP); `python_ast` later |
@@ -30,7 +50,21 @@ Future additions to the Contract-Driven Development spec and tooling.
 
 ---
 
-## Phase 2: Production Ready
+## Phase 2: Gate Enforcement
+
+| Item | Status | Notes |
+|------|--------|-------|
+| `cdd gate` command | 🔲 TODO | Single command: lint → test → frozen check |
+| Pre-commit hook generator | 🔲 TODO | `cdd init-hooks` creates git hooks |
+| CI workflow templates | 🔲 TODO | `cdd init-ci github` creates workflow |
+| Gate violation reporting | 🔲 TODO | Document what was skipped and why |
+| `$.file.content` in assertions | 🔲 TODO | Assert against file contents directly |
+
+**Goal:** Gates are enforced, not advisory.
+
+---
+
+## Phase 3: Production Ready
 
 | Item | Status | Notes |
 |------|--------|-------|
@@ -46,10 +80,13 @@ Future additions to the Contract-Driven Development spec and tooling.
 
 ---
 
-## Phase 3: Polish
+## Phase 4: Extended Analysis
 
 | Item | Status | Notes |
 |------|--------|-------|
+| `cdd analyze` (images) | 🔲 TODO | Shape detection, OCR |
+| `cdd analyze` (API specs) | 🔲 TODO | OpenAPI/Swagger parsing |
+| Visual diff testing | 🔲 TODO | Compare rendered output to reference |
 | AST schema versioning | 🔲 TODO | `$.ast.schema_version` field |
 | `tolerance_pct` for approx | 🔲 TODO | Percentage-based tolerance option |
 | Audio metrics expansion | 🔲 TODO | Clipping count, NaN/Inf detection, spectral centroid |
@@ -72,6 +109,24 @@ Future additions to the Contract-Driven Development spec and tooling.
 ---
 
 ## Design Decisions Log
+
+### Why Phase 0 before Phase 1?
+- Process failures revealed that analysis must come first
+- Pyro-Logger case: contracts written on assumptions, not evidence
+- Gate enforcement only works if there's something to gate against
+- "You can't write a requirement until you've analyzed the source"
+
+### Why mandatory gates?
+- Human discipline failed (Pyro-Logger installer deployed without tests)
+- Advisory gates get skipped under time pressure
+- Exit codes + CI integration provide hard stops
+- Process violations must be documented, not ignored
+
+### Why anti-patterns in the spec?
+- Common mistakes were being repeated
+- "Can you see the icon?" is not verification
+- Ad-hoc scripts break the contract→test→report chain
+- Documented anti-patterns prevent drift
 
 ### Why numeric version fields instead of version string semantics?
 - Lexicographic string compare is wrong (`"3.9" > "3.10"`)
@@ -147,4 +202,4 @@ To propose additions:
 
 ---
 
-*Roadmap for CONTRACT_DRIVEN_DEV.md spec*
+*Roadmap for CDD spec v1.1.5*
