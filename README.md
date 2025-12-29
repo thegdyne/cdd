@@ -113,21 +113,59 @@ CDD is a collaboration between human and AI:
 
 ---
 
+## Mandatory Gates
+
+CDD enforces four gates. **You cannot proceed past a gate until it passes.**
+
+| Gate | Command | Passes When | Blocks |
+|------|---------|-------------|--------|
+| G0: Analyze | `cdd analyze <ref>` | Baseline exists | Contract writing |
+| G1: Lint | `cdd lint contracts/` | Exit 0 | Implementation start |
+| G2: Test | `cdd test contracts/` | Exit 0 | Contract freeze |
+| G3: Freeze | `status: frozen` | Human sets it | Deploy |
+
+```
+Reference ──► G0: Analyze ──► Contract ──► G1: Lint ──► Implement ──► G2: Test ──► G3: Freeze ──► Deploy
+```
+
+**Gates are not suggestions. They are hard stops.**
+
+Deploying without passing all gates is a process violation. See [SPEC.md](SPEC.md#mandatory-gates) for details.
+
+---
+
+## Anti-Patterns
+
+Avoid these common mistakes:
+
+| Anti-Pattern | Wrong | Right |
+|--------------|-------|-------|
+| AP1: Visual verification | "Can you see the icon?" | `cdd analyze` + check JSON |
+| AP2: Manual grep | `grep pattern file` | Contract test with `matches` |
+| AP3: Skip gates | "Deploy now, test later" | Tests must pass before deploy |
+| AP4: External tools | Standalone `analyze.py` | Add to `cdd analyze` |
+| AP5: Draft in prod | Deploy with `status: draft` | Freeze before deploy |
+| AP6: No source refs | Requirements without evidence | `source_ref: SRC001#E1_5` |
+
+See [SPEC.md](SPEC.md#appendix-anti-patterns) for detailed examples.
+
+---
+
 ## Installation
 
 ```bash
 # Via pipx (recommended for CLI)
-pipx install git+https://github.com/thegdyne/cdd.git@v1.1.3
+pipx install git+https://github.com/thegdyne/cdd.git@v1.1.5
 
 # Via pip
-pip install git+https://github.com/thegdyne/cdd.git@v1.1.3
+pip install git+https://github.com/thegdyne/cdd.git@v1.1.5
 ```
 
 Verify:
 
 ```bash
 cdd spec --version
-# 1.1.3
+# 1.1.5
 ```
 
 ---
@@ -153,7 +191,7 @@ Confirm the analysis captures what matters. If not, improve the tool or adjust i
 ```yaml
 # my-project/contracts/project.yaml
 project: my-project
-cdd_spec: 1.1.3
+cdd_spec: 1.1.5
 version: 1.0.0
 status: draft
 
@@ -248,9 +286,10 @@ cdd spec --version
 # Print full spec text
 cdd spec --print
 
-# Analyze source artifacts
+# Analyze source artifacts (PDF, HTML)
 cdd analyze <source> -o <output-dir>
 cdd analyze reference.pdf -o analysis/baseline/
+cdd analyze wireframe.html -o analysis/baseline/
 
 # Compare two analyses
 cdd compare <baseline-dir> <output-dir>
@@ -311,6 +350,7 @@ The `cdd_spec` field in your project contract declares which CDD spec version yo
 ## Documentation
 
 - [SPEC.md](SPEC.md) — The normative specification (contract schema, assertion operators, report format)
+- [CDD_ANALYSIS_AND_IMPROVEMENTS.md](CDD_ANALYSIS_AND_IMPROVEMENTS.md) — Implementation status and improvement proposals
 - [ROADMAP.md](ROADMAP.md) — Implementation status and future plans
 - [CHANGELOG.md](CHANGELOG.md) — Version history and compatibility notes
 

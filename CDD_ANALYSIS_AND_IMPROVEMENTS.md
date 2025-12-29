@@ -1,8 +1,25 @@
 # CDD Analysis and Improvement Proposal
 
-**Date:** 2025-12-28  
-**Based on:** CDD v1.1.3 codebase analysis  
-**Problem Statement:** Contracts based on assumptions lead to iterative rework
+**Date:** 2025-12-29 (updated)  
+**Based on:** CDD v1.1.5 codebase analysis  
+**Problem Statement:** Contracts based on assumptions lead to iterative rework; gates without enforcement get skipped
+
+---
+
+## Implementation Status
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| `cdd analyze` (PDF) | ✅ Done | `src/cdd/analyze/pdf.py` |
+| `cdd analyze` (HTML) | ✅ Done | `src/cdd/analyze/html.py` |
+| `cdd compare` | ✅ Done | Compare two analyses |
+| `source_ref` field | 🔲 TODO | Links requirements to analysis |
+| `visual_ref` field | 🔲 TODO | Links to reference images |
+| `cdd validate` command | 🔲 TODO | Check source_refs exist |
+| `sources` in project contract | 🔲 TODO | Declare source artifacts |
+| Assumption language lint | 🔲 TODO | Detect vague wording |
+| Mandatory gates | 🔲 TODO | G1/G2/G3 enforcement |
+| `cdd gate` command | 🔲 TODO | Single command for all gates |
 
 ---
 
@@ -33,6 +50,9 @@
 - ✅ Variable injection (`--var`)
 - ✅ Static file scanning with regex assertions
 - ✅ Spec version compatibility checking
+- ✅ PDF analysis (`cdd analyze *.pdf`)
+- ✅ HTML analysis (`cdd analyze *.html`)
+- ✅ Analysis comparison (`cdd compare`)
 
 **Code Quality:**
 - Clean separation: cli.py → runner.py → executors → assertions
@@ -40,7 +60,9 @@
 - Rich console output for human-readable reports
 - JSON output for machine consumption
 
-### The Gap: No Source Validation
+### The Gaps
+
+#### Gap 1: No Source Validation
 
 The linter checks:
 ```python
@@ -55,11 +77,23 @@ def _lint_component(...):
 
 **What's missing:** There's no validation that requirements describe reality.
 
+#### Gap 2: No Gate Enforcement
+
+Gates exist but nothing enforces them:
+```python
+# Current: gates are advisory
+cdd lint contracts/   # Can ignore exit code
+cdd test contracts/   # Can skip entirely
+# Deploy anyway
+```
+
+**What's missing:** Hard stops that prevent proceeding without passing.
+
 ---
 
-## Part 2: The Failure Mode (Pyro-Logger Case Study)
+## Part 2: Failure Modes
 
-### What Happened
+### Failure Mode 1: Assumption-Based Contracts (Pyro-Logger PDF)
 
 ```
 1. User: "Replicate this PDF form"
@@ -71,375 +105,192 @@ def _lint_component(...):
 7. Fix contract, rebuild
 ```
 
-**The lint passed because the contract was syntactically correct.**  
-**The contract was semantically wrong because it wasn't validated against the source.**
+**Root cause:** Contract written without analyzing source first.
 
-### Root Cause
+### Failure Mode 2: Skipped Gates (Pyro-Logger Installer)
 
+```
+1. Phase 0: ✅ Reference + analysis tool + baseline created
+2. Contract: ✅ Requirements + tests written
+3. Lint: ⏭️ SKIPPED
+4. Implement: ✅ Code written
+5. Test: ⏭️ SKIPPED (tests weren't runnable anyway)
+6. Freeze: ⏭️ SKIPPED
+7. Deploy: ✅ Pushed to production
+```
+
+**Root cause:** No enforcement mechanism; human discipline failed.
+
+---
+
+## Part 3: Mandatory Gates
+
+**[PROPOSED NORMATIVE ADDITION TO SPEC.md]**
+
+### Gate Definitions
+
+| Gate | Command | Passes When | Blocks |
+|------|---------|-------------|--------|
+| G0: Analyze | `cdd analyze <ref>` | Baseline exists | Contract writing |
+| G1: Lint | `cdd lint contracts/` | Exit 0 | Implementation start |
+| G2: Test | `cdd test contracts/` | Exit 0 | Contract freeze |
+| G3: Freeze | `status: frozen` | Manual verification | Deploy |
+
+### Gate Sequence
+
+```
+Reference artifact exists
+        │
+        ▼
+┌───────────────┐
+│  G0: ANALYZE  │ ── no baseline ──▶ Run cdd analyze
+└───────────────┘
+        │ baseline exists
+        ▼
+Write contract (with source_refs)
+        │
+        ▼
+┌───────────────┐
+│   G1: LINT    │ ── fail ──▶ Fix contract
+└───────────────┘
+        │ pass
+        ▼
+Implement
+        │
+        ▼
+┌───────────────┐
+│   G2: TEST    │ ── fail ──▶ Fix implementation
+└───────────────┘
+        │ pass
+        ▼
+┌───────────────┐
+│  G3: FREEZE   │ ── not frozen ──▶ Set status: frozen
+└───────────────┘
+        │ frozen
+        ▼
+Deploy
+```
+
+### Gate Violations
+
+Deploying without passing all gates is a **process violation**. Document violations with:
+- What gates were skipped
+- Why they were skipped  
+- Remediation plan
+
+**Gates are not suggestions. They are hard stops.**
+
+### Enforcement Mechanisms
+
+```bash
+# Option 1: Single gate command
+cdd gate contracts/
+# Runs: lint → test → frozen check
+# Exits 0 only if all pass
+
+# Option 2: CI workflow
+- run: cdd lint contracts/
+- run: cdd test contracts/
+- run: |
+    if grep -q "status: draft" contracts/*.yaml; then
+      echo "ERROR: Cannot deploy draft contracts"
+      exit 1
+    fi
+
+# Option 3: Pre-commit hook
+# .git/hooks/pre-push
+cdd gate contracts/ || exit 1
+```
+
+---
+
+## Part 4: Anti-Patterns
+
+**[PROPOSED GOVERNANCE ADDITION TO SPEC.md]**
+
+### AP1: Visual Verification
+
+**Wrong:**
+> "Can you look at the wireframe and confirm the icon is there?"
+
+**Right:**
+> Run `cdd analyze wireframe.html -o analysis/` and check `required_elements.app_icon: true`
+
+Human visual verification is subjective and non-reproducible. Analysis tools provide objective, repeatable checks.
+
+### AP2: Manual Grep Instead of Contract Tests
+
+**Wrong:**
+```bash
+grep "display-mode.*standalone" output.html && echo "Pass"
+```
+
+**Right:**
 ```yaml
-# What was written (assumption)
-- id: R010b
-  description: Inline text fields have underlines
-  acceptance_criteria:
-    - Format is "LABEL:" followed by underline
+tests:
+  - id: T001
+    type: unit
+    files: docs/index.html
+    assert:
+      - op: matches
+        actual: $.file.content
+        pattern: "display-mode:\\s*standalone"
+```
 
-# What should have been required
-- id: R010b
+Ad-hoc verification doesn't get recorded in the contract. Future runs won't repeat the check.
+
+### AP3: Skipping Gates "Just This Once"
+
+**Wrong:**
+> "The tests aren't wired up yet, let's deploy and backfill later"
+
+**Right:**
+> Wire up tests before implementation. If tests can't run, the contract isn't ready.
+
+"Later" becomes "never". Gates exist because skipping them causes the problems they prevent.
+
+### AP4: Analysis Tool Outside Framework
+
+**Wrong:**
+> Create `analyze_html.py` as standalone script, reference in contract
+
+**Right:**
+> Add analyzer to CDD tooling, use `cdd analyze` command
+
+Standalone scripts break the contract→test→report chain. Tests can't find the tool.
+
+### AP5: Draft Contracts in Production
+
+**Wrong:**
+> Deploy with `status: draft`
+
+**Right:**
+> Set `status: frozen` after G2 passes, before deploy
+
+Draft status means "this may change". Production code should not depend on things that may change.
+
+### AP6: Requirements Without Source References
+
+**Wrong:**
+```yaml
+- id: R001
+  description: Input fields have underlines  # Says who?
+```
+
+**Right:**
+```yaml
+- id: R001
   description: Input fields use rectangular boxes
-  source_ref: analysis/page1_structure.json#element_E002  # ← MUST exist
-  visual_ref: analysis/page1.png                          # ← MUST exist
-  acceptance_criteria:
-    - Rectangular bordered box at coordinates (95, 85, 295, 105)
+  source_ref: SRC001#E1_5  # Points to analyzed element
 ```
+
+Ungrounded requirements are assumptions. Assumptions cause rework.
 
 ---
 
-## Part 3: Proposed Improvements
+## Part 5: Source-First Workflow
 
-### 3.1 New Command: `cdd analyze`
-
-Extract structured data from source artifacts before writing contracts.
-
-```bash
-# Analyze a PDF
-cdd analyze sources/form.pdf --output analysis/
-
-# Produces:
-#   analysis/form_page1.png
-#   analysis/form_page2.png  
-#   analysis/form_structure.json
-#   analysis/form_elements.yaml
-```
-
-**Implementation location:** `src/cdd/analyze/`
-
-```python
-# src/cdd/analyze/__init__.py
-from pathlib import Path
-from typing import Dict, Any
-
-def analyze_source(source_path: Path, output_dir: Path) -> Dict[str, Any]:
-    """
-    Analyze a source artifact and produce structured output.
-    
-    Supported types:
-    - PDF: extract images, detect rectangles/lines/text positions
-    - Image: detect shapes, text regions
-    - JSON/YAML: schema extraction
-    - API: endpoint discovery (future)
-    """
-    suffix = source_path.suffix.lower()
-    
-    if suffix == '.pdf':
-        from cdd.analyze.pdf import analyze_pdf
-        return analyze_pdf(source_path, output_dir)
-    elif suffix in ('.png', '.jpg', '.jpeg'):
-        from cdd.analyze.image import analyze_image
-        return analyze_image(source_path, output_dir)
-    else:
-        raise ValueError(f"Unsupported source type: {suffix}")
-```
-
-```python
-# src/cdd/analyze/pdf.py
-import fitz  # PyMuPDF
-from pathlib import Path
-from typing import Dict, Any, List
-
-def analyze_pdf(pdf_path: Path, output_dir: Path) -> Dict[str, Any]:
-    """Extract structure from PDF."""
-    output_dir.mkdir(parents=True, exist_ok=True)
-    doc = fitz.open(pdf_path)
-    
-    result = {
-        "source": str(pdf_path),
-        "type": "pdf",
-        "page_count": len(doc),
-        "pages": []
-    }
-    
-    for page_num, page in enumerate(doc):
-        # Render page as image
-        pix = page.get_pixmap(dpi=150)
-        img_path = output_dir / f"page_{page_num + 1}.png"
-        pix.save(str(img_path))
-        
-        # Extract elements
-        page_data = {
-            "page": page_num + 1,
-            "image": str(img_path),
-            "width": page.rect.width,
-            "height": page.rect.height,
-            "elements": []
-        }
-        
-        # Extract drawings (rectangles, lines)
-        for i, path in enumerate(page.get_drawings()):
-            for item in path.get("items", []):
-                if item[0] == "re":  # Rectangle
-                    rect = item[1]
-                    page_data["elements"].append({
-                        "id": f"E{page_num+1}_{i}",
-                        "type": "rectangle",
-                        "bounds": {
-                            "x": round(rect.x0, 1),
-                            "y": round(rect.y0, 1),
-                            "width": round(rect.width, 1),
-                            "height": round(rect.height, 1)
-                        }
-                    })
-        
-        # Extract text with positions
-        for block in page.get_text("dict")["blocks"]:
-            if block.get("type") == 0:
-                for line in block.get("lines", []):
-                    for span in line.get("spans", []):
-                        text = span.get("text", "").strip()
-                        if text:
-                            page_data["elements"].append({
-                                "id": f"T{page_num+1}_{len(page_data['elements'])}",
-                                "type": "text",
-                                "content": text,
-                                "bounds": {
-                                    "x": round(span["bbox"][0], 1),
-                                    "y": round(span["bbox"][1], 1),
-                                    "width": round(span["bbox"][2] - span["bbox"][0], 1),
-                                    "height": round(span["bbox"][3] - span["bbox"][1], 1)
-                                },
-                                "font": span.get("font", ""),
-                                "size": round(span.get("size", 0), 1)
-                            })
-        
-        result["pages"].append(page_data)
-    
-    # Save structure
-    import json
-    structure_path = output_dir / "structure.json"
-    with open(structure_path, "w") as f:
-        json.dump(result, f, indent=2)
-    
-    doc.close()
-    return result
-```
-
----
-
-### 3.2 New Contract Fields: `sources` and `source_ref`
-
-**Schema additions:**
-
-```yaml
-# Project contract - new field
-sources:
-  - id: SRC001
-    type: pdf
-    file: sources/WeeklyPyrotechnicLog_4.pdf
-    analysis: analysis/form/  # Output from cdd analyze
-    description: Official form to replicate
-
-# Component contract - requirements must cite sources
-requirements:
-  - id: R010b
-    priority: must
-    description: Input fields use rectangular boxes
-    source_ref: SRC001#E1_5          # Required: element from analysis
-    visual_ref: analysis/form/page_1.png  # Required for visual requirements
-    acceptance_criteria:
-      - Rectangular bordered box matching element E1_5 dimensions
-```
-
-**Lint additions:**
-
-```python
-# src/cdd/lint/__init__.py additions
-
-def _lint_component(path, doc, errors, warnings, strict):
-    # ... existing checks ...
-    
-    # NEW: Check source refs if sources defined
-    sources = doc.get("sources", [])
-    source_ids = {s["id"] for s in sources if isinstance(s, dict)}
-    
-    for r in doc.get("requirements", []):
-        source_ref = r.get("source_ref")
-        visual_ref = r.get("visual_ref")
-        
-        # If contract has sources, requirements should cite them
-        if sources and not source_ref:
-            warnings.append({
-                "code": "missing_source_ref",
-                "message": f"{path}: requirement {r.get('id')} has no source_ref"
-            })
-        
-        # Validate source_ref format and existence
-        if source_ref:
-            ref_source = source_ref.split("#")[0]
-            if ref_source not in source_ids:
-                errors.append({
-                    "code": "invalid_source_ref", 
-                    "message": f"{path}: source_ref '{ref_source}' not in sources"
-                })
-        
-        # Validate visual_ref file exists
-        if visual_ref:
-            visual_path = path.parent / visual_ref
-            if not visual_path.exists():
-                errors.append({
-                    "code": "missing_visual_ref",
-                    "message": f"{path}: visual_ref '{visual_ref}' not found"
-                })
-```
-
----
-
-### 3.3 New Lint Rules: Assumption Detection
-
-Detect vague language that indicates assumptions rather than evidence:
-
-```python
-# src/cdd/lint/assumption_detector.py
-
-ASSUMPTION_PATTERNS = [
-    (r'\bmatches?\s+(the\s+)?original\b', "Use source_ref instead of 'matches original'"),
-    (r'\bsimilar\s+to\b', "Use source_ref with specific element"),
-    (r'\blike\s+the\b', "Cite specific source element"),
-    (r'\bappropriate\b', "Define specific criteria"),
-    (r'\bcorrect\s+(position|layout|format)\b', "Specify coordinates or source_ref"),
-    (r'\bstandard\b', "Define the standard explicitly"),
-]
-
-def check_assumption_language(text: str) -> List[Dict[str, str]]:
-    """Detect vague language that suggests assumptions."""
-    import re
-    warnings = []
-    for pattern, suggestion in ASSUMPTION_PATTERNS:
-        if re.search(pattern, text, re.IGNORECASE):
-            warnings.append({
-                "code": "assumption_language",
-                "message": f"Vague language detected: {suggestion}",
-                "pattern": pattern
-            })
-    return warnings
-```
-
----
-
-### 3.4 New Command: `cdd validate`
-
-Deep validation that requirements are grounded:
-
-```bash
-cdd validate contracts/
-
-# Output:
-# ✓ R001: source_ref SRC001#E1_5 exists in analysis/form/structure.json
-# ✓ R001: visual_ref analysis/form/page_1.png exists
-# ✓ R002: source_ref SRC001#E1_8 exists
-# ⚠ R003: no source_ref (requirement may be based on assumption)
-# ✗ R004: source_ref SRC001#E99 not found in structure.json
-```
-
-```python
-# src/cdd/validate.py
-
-def validate_source_refs(contracts_path: Path) -> Dict[str, Any]:
-    """
-    Validate that all source_refs point to existing analysis artifacts.
-    """
-    results = {
-        "ok": True,
-        "validated": [],
-        "warnings": [],
-        "errors": []
-    }
-    
-    # Load all contracts
-    for contract_path in contracts_path.rglob("*.yaml"):
-        doc = yaml.safe_load(contract_path.read_text())
-        if "contract" not in doc:
-            continue
-            
-        sources = {s["id"]: s for s in doc.get("sources", [])}
-        
-        for req in doc.get("requirements", []):
-            req_id = req.get("id")
-            source_ref = req.get("source_ref")
-            visual_ref = req.get("visual_ref")
-            
-            if source_ref:
-                # Parse ref: SRC001#E1_5
-                parts = source_ref.split("#")
-                source_id = parts[0]
-                element_id = parts[1] if len(parts) > 1 else None
-                
-                if source_id not in sources:
-                    results["errors"].append({
-                        "req": req_id,
-                        "error": f"Source {source_id} not defined"
-                    })
-                    results["ok"] = False
-                else:
-                    # Check element exists in analysis
-                    analysis_dir = sources[source_id].get("analysis")
-                    if analysis_dir and element_id:
-                        structure_file = contract_path.parent / analysis_dir / "structure.json"
-                        if structure_file.exists():
-                            structure = json.loads(structure_file.read_text())
-                            all_elements = []
-                            for page in structure.get("pages", []):
-                                all_elements.extend(e["id"] for e in page.get("elements", []))
-                            
-                            if element_id not in all_elements:
-                                results["errors"].append({
-                                    "req": req_id,
-                                    "error": f"Element {element_id} not in {structure_file}"
-                                })
-                                results["ok"] = False
-                            else:
-                                results["validated"].append({
-                                    "req": req_id,
-                                    "source_ref": source_ref,
-                                    "status": "valid"
-                                })
-            else:
-                results["warnings"].append({
-                    "req": req_id,
-                    "warning": "No source_ref - may be assumption-based"
-                })
-    
-    return results
-```
-
----
-
-### 3.5 Updated CLI
-
-```python
-# src/cdd/cli.py additions
-
-# cdd analyze
-p_analyze = sub.add_parser("analyze", help="Analyze source artifacts")
-p_analyze.add_argument("source", help="Source file (PDF, image, etc.)")
-p_analyze.add_argument("--output", "-o", default="analysis/", help="Output directory")
-
-# cdd validate  
-p_validate = sub.add_parser("validate", help="Validate source references")
-p_validate.add_argument("path", nargs="?", default="contracts", help="Contracts directory")
-p_validate.add_argument("--json", action="store_true")
-p_validate.add_argument("--strict", action="store_true", help="Fail on warnings")
-```
-
----
-
-## Part 4: Updated Workflow
-
-### Before (Assumption-Based)
-
-```
-User Request → AI Writes Contract → Lint (schema only) → Build → Wrong → Fix → Repeat
-```
-
-### After (Source-First)
+### The Complete Pipeline
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -447,9 +298,9 @@ User Request → AI Writes Contract → Lint (schema only) → Build → Wrong �
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │  1. ACQUIRE                                                                 │
-│     User provides source artifacts (PDFs, images, API specs, etc.)          │
+│     User provides source artifacts (PDFs, HTML, images, API specs)          │
 │                                                                             │
-│  2. ANALYZE                                                                 │
+│  2. ANALYZE (G0)                                                            │
 │     $ cdd analyze sources/form.pdf --output analysis/                       │
 │     → Produces: structure.json, page images, element catalog                │
 │                                                                             │
@@ -462,45 +313,29 @@ User Request → AI Writes Contract → Lint (schema only) → Build → Wrong �
 │     → Checks all source_refs exist in analysis artifacts                    │
 │     → Warns on requirements without source_refs                             │
 │                                                                             │
-│  5. LINT                                                                    │
+│  5. LINT (G1)                                                               │
 │     $ cdd lint contracts/                                                   │
-│     → Schema validation + coverage + assumption language detection          │
+│     → Schema validation + coverage + source_ref validation                  │
 │                                                                             │
 │  6. BUILD                                                                   │
 │     Implementation guided by source_refs and analysis artifacts             │
 │                                                                             │
-│  7. TEST                                                                    │
+│  7. TEST (G2)                                                               │
 │     $ cdd test contracts/                                                   │
 │     → Tests can reference same analysis for comparison                      │
+│                                                                             │
+│  8. FREEZE (G3)                                                             │
+│     Set status: frozen in contract                                          │
+│                                                                             │
+│  9. DEPLOY                                                                  │
+│     Only after G0-G3 all pass                                               │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Part 5: Implementation Roadmap
-
-### Phase 0: Source-First Foundation (NEW)
-
-| Item | Effort | Impact | Notes |
-|------|--------|--------|-------|
-| `cdd analyze` for PDFs | 2 days | High | Uses PyMuPDF, extracts images + structure |
-| `source_ref` field | 1 day | High | Schema addition, optional initially |
-| `visual_ref` validation | 0.5 day | High | File existence check in lint |
-| `cdd validate` command | 1 day | High | Deep source_ref validation |
-| Assumption language lint | 0.5 day | Medium | Regex patterns for vague words |
-
-### Integration with Existing Phases
-
-The new Phase 0 becomes a prerequisite. Existing phases remain:
-
-- **Phase 1 (MVP):** Add source_ref support to lint
-- **Phase 2 (Production):** `cdd analyze` supports images, APIs
-- **Phase 3 (Polish):** Visual diff testing against analysis
-
----
-
-## Part 6: Contract Schema Changes
+## Part 6: Schema Changes Required
 
 ### New Top-Level Field: `sources`
 
@@ -519,11 +354,10 @@ sources:  # NEW
     description: Official form to replicate
     
   - id: SRC002
-    type: image
-    file: sources/brothers_screenshot.png
-    description: Reference for saved entries UI
-
-# ... rest of contract
+    type: html
+    file: reference/wireframe.html
+    analysis: analysis/wireframe/
+    description: Installer landing page wireframe
 ```
 
 ### New Requirement Fields
@@ -534,8 +368,8 @@ requirements:
     priority: must
     description: Input fields use rectangular boxes
     source_ref: SRC001#E1_5      # NEW: Required for grounded requirements
-    visual_ref: analysis/form/page_1.png  # NEW: Required for visual requirements
-    region: {x: 95, y: 85, w: 200, h: 20}  # NEW: Optional specific coordinates
+    visual_ref: analysis/form/page_1.png  # NEW: For visual requirements
+    region: {x: 95, y: 85, w: 200, h: 20}  # NEW: Optional coordinates
     acceptance_criteria:
       - Bordered rectangle matching source element E1_5
 ```
@@ -549,30 +383,61 @@ requirements:
 
 ---
 
-## Part 7: Example - How This Prevents Our Failure
+## Part 7: Process Checkpoints
 
-### Without Source-First (What Happened)
+| Checkpoint | Verified By | Must Be True |
+|------------|-------------|--------------|
+| Reference exists | Human | Artifact is available and accessible |
+| Analysis complete | `cdd analyze` exits 0 | Tool produces baseline output |
+| Baseline approved | Human | Analysis captures what matters |
+| Contract valid | `cdd lint` exits 0 | Schema correct, requirements covered |
+| Source refs valid | `cdd validate` exits 0 | All refs point to real elements |
+| Tests runnable | `cdd test` executes | No missing tools or broken steps |
+| Tests pass | `cdd test` exits 0 | All assertions satisfied |
+| Contract frozen | `status: frozen` in YAML | Explicit human decision |
+| Ready to deploy | G0 ∧ G1 ∧ G2 ∧ G3 | All gates passed |
 
-```yaml
-# AI writes based on assumption
-- id: R010b
-  description: Inline text fields have underlines
-  acceptance_criteria:
-    - Format is "LABEL:" followed by underline
-```
+---
+
+## Part 8: Implementation Roadmap
+
+### Phase A: Source Validation (Next Priority)
+
+| Item | Effort | Impact | Status |
+|------|--------|--------|--------|
+| `cdd analyze` (PDF) | 2 days | High | ✅ Done |
+| `cdd analyze` (HTML) | 1 day | High | ✅ Done |
+| `cdd compare` | 0.5 day | Medium | ✅ Done |
+| `source_ref` field in schema | 1 day | High | 🔲 TODO |
+| `sources` section in project | 0.5 day | High | 🔲 TODO |
+| `cdd validate` command | 1 day | High | 🔲 TODO |
+| Assumption language lint | 0.5 day | Medium | 🔲 TODO |
+
+### Phase B: Gate Enforcement (After Phase A)
+
+| Item | Effort | Impact | Status |
+|------|--------|--------|--------|
+| `cdd gate` command | 0.5 day | High | 🔲 TODO |
+| Pre-commit hook generator | 0.5 day | Medium | 🔲 TODO |
+| CI workflow templates | 0.5 day | Medium | 🔲 TODO |
+| Gate violation reporting | 0.5 day | Medium | 🔲 TODO |
+
+### Phase C: Extended Analysis (Future)
+
+| Item | Effort | Impact | Status |
+|------|--------|--------|--------|
+| `cdd analyze` (images) | 2 days | Medium | 🔲 TODO |
+| `cdd analyze` (API specs) | 2 days | Medium | 🔲 TODO |
+| Visual diff testing | 3 days | Medium | 🔲 TODO |
+| `$.file.content` in assertions | 1 day | High | 🔲 TODO |
+
+---
+
+## Part 9: Example - Complete Workflow
+
+### Step 1: Analyze Source
 
 ```bash
-$ cdd lint contracts/
-✅ PASS  # Schema valid, coverage OK
-
-$ cdd test contracts/
-# ... builds wrong thing
-```
-
-### With Source-First (What Should Happen)
-
-```bash
-# Step 1: Analyze source
 $ cdd analyze sources/WeeklyPyrotechnicLog_4.pdf --output analysis/form/
 
 Analyzing: sources/WeeklyPyrotechnicLog_4.pdf
@@ -582,50 +447,85 @@ Output: analysis/form/
   - page_1.png
   - page_2.png
   - structure.json
+  - elements.md
 ```
 
+### Step 2: Write Contract with Source Refs
+
 ```yaml
-# Step 2: Write contract citing analysis
+# contracts/project.yaml
+project: pyro-logger
+cdd_spec: 1.2.0
+version: 1.0.0
+status: draft
+
 sources:
   - id: SRC001
     type: pdf
     file: sources/WeeklyPyrotechnicLog_4.pdf
     analysis: analysis/form/
 
+# contracts/pdf_layout.yaml
+contract: pdf_layout
+version: 1.0.0
+status: draft
+
 requirements:
-  - id: R010b
-    description: Input fields use rectangular boxes  # Correct!
-    source_ref: SRC001#E1_5  # Points to actual rectangle in structure.json
+  - id: R001
+    priority: must
+    description: Input fields use rectangular boxes
+    source_ref: SRC001#R1_5
     visual_ref: analysis/form/page_1.png
     acceptance_criteria:
-      - Rectangular bordered box at element E1_5 position
+      - Rectangular bordered box matching element R1_5
 ```
+
+### Step 3: Validate
 
 ```bash
-# Step 3: Validate refs exist
 $ cdd validate contracts/
-✅ R010b: source_ref SRC001#E1_5 found in structure.json
-✅ R010b: visual_ref analysis/form/page_1.png exists
-
-# Step 4: Lint
-$ cdd lint contracts/
-✅ PASS
-
-# Step 5: Build - now building the right thing
+✅ R001: source_ref SRC001#R1_5 found in structure.json
+✅ R001: visual_ref analysis/form/page_1.png exists
 ```
 
-**The key difference:** Before writing "underlines," I would have run `cdd analyze` which would have shown rectangles in `structure.json`. The contract would have been correct from the start.
+### Step 4: Lint
+
+```bash
+$ cdd lint contracts/
+✅ PASS (schema valid, coverage OK, source_refs valid)
+```
+
+### Step 5: Implement and Test
+
+```bash
+$ cdd test contracts/
+✅ T001: field_dimensions_match PASS
+✅ T002: box_borders_present PASS
+```
+
+### Step 6: Freeze and Deploy
+
+```bash
+# Set status: frozen in contracts
+$ cdd gate contracts/
+✅ G1 (lint): PASS
+✅ G2 (test): PASS  
+✅ G3 (frozen): PASS
+Ready to deploy.
+```
 
 ---
 
 ## Summary
 
-| Problem | Solution |
-|---------|----------|
-| Contracts based on assumptions | `cdd analyze` extracts evidence first |
-| No source validation | `source_ref` field links requirements to artifacts |
-| Visual specs in prose | `visual_ref` + region coordinates |
-| Vague language passes lint | Assumption language detection |
-| Late discovery of errors | `cdd validate` catches missing refs early |
+| Problem | Solution | Status |
+|---------|----------|--------|
+| Contracts based on assumptions | `cdd analyze` extracts evidence first | ✅ PDF/HTML done |
+| No source validation | `source_ref` field links requirements to artifacts | 🔲 TODO |
+| Visual specs in prose | `visual_ref` + region coordinates | 🔲 TODO |
+| Vague language passes lint | Assumption language detection | 🔲 TODO |
+| Late discovery of errors | `cdd validate` catches missing refs early | 🔲 TODO |
+| Gates get skipped | `cdd gate` + enforcement mechanisms | 🔲 TODO |
+| No process documentation | Anti-patterns section in spec | 🔲 TODO |
 
-**The core principle:** You can't write a requirement until you've analyzed the source. The tooling enforces this by requiring source_refs that point to analysis artifacts.
+**The core principle:** You can't write a requirement until you've analyzed the source. You can't deploy until all gates pass. The tooling enforces both.

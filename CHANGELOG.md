@@ -1,6 +1,36 @@
 # Changelog
 All notable changes to the CDD spec and tooling.
 
+## [1.1.5] - 2025-12-29
+
+### Added
+- HTML analyzer (`cdd analyze <file.html>`) for web project contracts
+- `analyze/html.py` extracts: element counts, CSS classes, images, required elements check
+- `compare_html_analyses()` for comparing HTML baselines
+- Process failure report template for post-mortems
+
+### Changed
+- `cdd analyze` now supports `.html` and `.htm` files
+
+### Compatibility
+- **Additive, backwards compatible**
+
+## [1.1.5] - 2025-12-29
+
+### Added
+- Mandatory Gates section in SPEC.md (G0-G3 with sequence diagram)
+- Process Checkpoints table in SPEC.md
+- Anti-Patterns appendix in SPEC.md (AP1-AP6)
+- HTML analyzer (`cdd analyze *.html`) in tooling
+- Gates and Anti-Patterns summary in README.md
+
+### Changed
+- README updated with gates workflow and anti-patterns table
+- Documentation section now references CDD_ANALYSIS_AND_IMPROVEMENTS.md
+
+### Compatibility
+- **No behavior change** — clarifies process enforcement without changing contract schema or tooling
+
 ## [1.1.4] - 2025-12-29
 
 ### Added

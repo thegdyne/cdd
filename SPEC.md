@@ -1,6 +1,6 @@
 ---
 doc_status: frozen
-doc_version: 1.1.4
+doc_version: 1.1.5
 date: 2025-12-29
 reviewers: [AI1, AI2]
 ---
@@ -110,6 +110,91 @@ This applies to any software project.
     |  Project complete                     |
     +---------------------------------------+
 ```
+
+---
+
+## Mandatory Gates
+
+**[NORMATIVE]**
+
+CDD defines four mandatory gates. Implementation MUST NOT proceed past a gate until it passes.
+
+| Gate | Command | Passes When | Blocks |
+|------|---------|-------------|--------|
+| G0: Analyze | `cdd analyze <ref>` | Baseline exists | Contract writing |
+| G1: Lint | `cdd lint contracts/` | Exit 0 | Implementation start |
+| G2: Test | `cdd test contracts/` | Exit 0 | Contract freeze |
+| G3: Freeze | `status: frozen` | Manual verification | Deploy |
+
+### Gate Sequence
+
+```
+Reference artifact exists
+        │
+        ▼
+┌───────────────┐
+│  G0: ANALYZE  │ ── no baseline ──▶ Run cdd analyze
+└───────────────┘
+        │ baseline exists
+        ▼
+Write contract (with source_refs)
+        │
+        ▼
+┌───────────────┐
+│   G1: LINT    │ ── fail ──▶ Fix contract
+└───────────────┘
+        │ pass
+        ▼
+Implement
+        │
+        ▼
+┌───────────────┐
+│   G2: TEST    │ ── fail ──▶ Fix implementation
+└───────────────┘
+        │ pass
+        ▼
+┌───────────────┐
+│  G3: FREEZE   │ ── not frozen ──▶ Set status: frozen
+└───────────────┘
+        │ frozen
+        ▼
+Deploy
+```
+
+### Gate Violations
+
+Deploying without passing all gates is a **process violation**. Document violations with:
+- What gates were skipped
+- Why they were skipped
+- Remediation plan
+
+**Gates are not suggestions. They are hard stops.**
+
+### Enforcement
+
+Gates are enforced by:
+
+1. **Exit codes** — All CDD commands exit 1 on failure
+2. **CI integration** — Gates run in CI pipeline, block merge on failure
+3. **Pre-commit hooks** — Optional local enforcement
+4. **`cdd gate` command** — Single command that runs all gates (planned)
+
+---
+
+## Process Checkpoints
+
+**[NORMATIVE]**
+
+| Checkpoint | Verified By | Must Be True |
+|------------|-------------|--------------|
+| Reference exists | Human | Artifact is available and accessible |
+| Analysis complete | `cdd analyze` exits 0 | Tool produces baseline output |
+| Baseline approved | Human | Analysis captures what matters |
+| Contract valid | `cdd lint` exits 0 | Schema correct, requirements covered |
+| Tests runnable | `cdd test` executes | No missing tools or broken steps |
+| Tests pass | `cdd test` exits 0 | All assertions satisfied |
+| Contract frozen | `status: frozen` in YAML | Explicit human decision |
+| Ready to deploy | G0 ∧ G1 ∧ G2 ∧ G3 | All gates passed |
 
 ---
 
@@ -1760,6 +1845,13 @@ matrix:
 ## Changelog
 
 
+- **1.1.5** (2025-12-29): Mandatory gates and anti-patterns — `No behavior change`
+  - Added Mandatory Gates section (G0-G3) with sequence diagram
+  - Added Process Checkpoints table
+  - Added Anti-Patterns appendix (AP1-AP6)
+  - Added HTML analyzer support (`cdd analyze *.html`)
+  - Clarifies process enforcement without changing contract schema or tooling behavior
+
 - **1.1.4** (2025-12-29): Analysis-first methodology — `No behavior change`
   - Added "Analysis precedes contracts" as first principle in What section
   - Added Reference, Analysis, Baseline to Glossary
@@ -1877,6 +1969,90 @@ matrix:
 
 ---
 
+## Appendix: Anti-Patterns
+
+**[GOVERNANCE]** *(guidance for practitioners, not enforced by tooling)*
+
+### AP1: Visual Verification
+
+**Wrong:**
+> "Can you look at the wireframe and confirm the icon is there?"
+
+**Right:**
+> Run `cdd analyze wireframe.html -o analysis/` and check `required_elements.app_icon: true`
+
+Human visual verification is subjective and non-reproducible. Analysis tools provide objective, repeatable checks.
+
+### AP2: Manual Grep Instead of Contract Tests
+
+**Wrong:**
+```bash
+grep "display-mode.*standalone" output.html && echo "Pass"
+```
+
+**Right:**
+```yaml
+tests:
+  - id: T001
+    type: unit
+    files: docs/index.html
+    assert:
+      - op: matches
+        actual: $.file.content
+        pattern: "display-mode:\\s*standalone"
+```
+
+Ad-hoc verification doesn't get recorded in the contract. Future runs won't repeat the check.
+
+### AP3: Skipping Gates "Just This Once"
+
+**Wrong:**
+> "The tests aren't wired up yet, let's deploy and backfill later"
+
+**Right:**
+> Wire up tests before implementation. If tests can't run, the contract isn't ready.
+
+"Later" becomes "never". Gates exist because skipping them causes the problems they prevent.
+
+### AP4: Analysis Tool Outside Framework
+
+**Wrong:**
+> Create `analyze_html.py` as standalone script, reference in contract
+
+**Right:**
+> Add analyzer to CDD tooling, use `cdd analyze` command
+
+Standalone scripts break the contract→test→report chain. Tests can't find the tool.
+
+### AP5: Draft Contracts in Production
+
+**Wrong:**
+> Deploy with `status: draft`
+
+**Right:**
+> Set `status: frozen` after G2 passes, before deploy
+
+Draft status means "this may change". Production code should not depend on things that may change.
+
+### AP6: Requirements Without Source References
+
+**Wrong:**
+```yaml
+- id: R001
+  description: Input fields have underlines  # Says who?
+```
+
+**Right:**
+```yaml
+- id: R001
+  description: Input fields use rectangular boxes
+  source_ref: SRC001#E1_5  # Points to analyzed element
+```
+
+Ungrounded requirements are assumptions. Assumptions cause rework.
+
+---
+
 ## Appendix: Process Evolution
 
 **[GOVERNANCE]** *(normative for spec maintenance, not enforced by tooling)*
@@ -1954,4 +2130,4 @@ The following sections constitute the Normative Core:
 
 ---
 
-*Version 1.1.4 — Frozen. Reviewed and approved by AI1 and AI2.*
+*Version 1.1.5 — Frozen. Reviewed and approved by AI1 and AI2.*
