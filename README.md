@@ -51,29 +51,29 @@ This precision eliminates guesswork and enables targeted iteration.
 ## The Development Loop
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│   Reference ──► Analyze ──► Baseline                        │
-│       │                         │                           │
-│       │                         ▼                           │
-│       │                   Write Contract                    │
-│       │                         │                           │
-│       │                         ▼                           │
-│       │                    Implement                        │
-│       │                         │                           │
-│       │                         ▼                           │
-│       │              Analyze Output ──► Compare             │
-│       │                                    │                │
-│       │                         ┌─────────┴─────────┐       │
-│       │                         │                   │       │
-│       │                    Deviations?          Match?      │
-│       │                         │                   │       │
-│       │                         ▼                   ▼       │
-│       │                   Fix & Iterate         Done        │
-│       │                         │                           │
-│       └─────────────────────────┘                           │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                 │
+│   Reference ──► Analyze ──► Baseline                                            │
+│       │                         │                                               │
+│       │                         ▼                                               │
+│       │                   Write Contract                                        │
+│       │                         │                                               │
+│       │                         ▼                                               │
+│       │                    Implement                                            │
+│       │                         │                                               │
+│       │                         ▼                                               │
+│       │              Analyze Output ──► Compare                                 │
+│       │                                    │                                    │
+│       │                         ┌─────────┴─────────┐                           │
+│       │                         │                   │                           │
+│       │                    Deviations?          Match?                          │
+│       │                         │                   │                           │
+│       │                         ▼                   ▼                           │
+│       │                   Fix & Iterate         Done                            │
+│       │                         │                                               │
+│       └─────────────────────────┘                                               │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 1. **Analyze reference** — Tool extracts structure at micro-detail level
@@ -131,6 +131,44 @@ Reference ──► G0: Analyze ──► Contract ──► G1: Lint ──► 
 **Gates are not suggestions. They are hard stops.**
 
 Deploying without passing all gates is a process violation. See [SPEC.md](SPEC.md#mandatory-gates) for details.
+
+---
+
+## Practical Workflow
+
+The recommended workflow for deploying a feature with CDD:
+
+```bash
+# G0: ANALYZE - Sign off spec document
+# Ensure your design doc exists and is complete
+
+# G0.1: PATH VERIFY - Check contract paths resolve
+cdd paths contracts/feature.yaml
+
+# G1: LINT - Validate contract schema
+cdd lint contracts/feature.yaml
+
+# G2: TEST - Run incrementally, add tests in batches
+cdd test contracts/feature.yaml
+
+# G2.5: IMPLEMENT - Create files, re-test until pass
+# ... write code ...
+cdd test contracts/feature.yaml
+
+# G3: FREEZE - Lock contract, commit
+# Change status: draft → status: frozen
+git add contracts/feature.yaml src/
+git commit -m "feat: Feature name (CDD contract feature v1.0.0)"
+```
+
+### Quick Reference
+
+```bash
+cdd paths contracts/feature.yaml    # Verify file paths resolve
+cdd lint contracts/feature.yaml     # Validate schema
+cdd test contracts/feature.yaml     # Run tests
+cdd test contracts/ --only T001     # Run single test
+```
 
 ---
 
@@ -248,6 +286,9 @@ tests:
 ### 4. Implement and compare
 
 ```bash
+# Verify paths first
+cdd paths contracts/
+
 # Run tests
 cdd test contracts/
 
@@ -282,6 +323,10 @@ cdd spec --version
 
 # Print full spec text
 cdd spec --print
+
+# Verify file paths in contracts resolve
+cdd paths contracts/
+cdd paths contracts/feature.yaml
 
 # Analyze source artifacts (PDF, HTML)
 cdd analyze <source> -o <output-dir>
@@ -344,18 +389,31 @@ The `cdd_spec` field in your project contract declares which CDD spec version yo
 
 ---
 
+## Known Issues
+
+Current tooling limitations (see [cdd-tooling](https://github.com/thegdyne/cdd-tooling) for updates):
+
+| Issue | Workaround |
+|-------|------------|
+| `cdd test file.yaml` runs all contracts in directory | Test in isolation or use `--only T001` |
+| Static executor `$.file.content` returns null | Use shell executor with grep |
+
+---
+
 ## Documentation
 
 - [SPEC.md](SPEC.md) — The normative specification (contract schema, assertion operators, report format)
-- [CDD_ANALYSIS_AND_IMPROVEMENTS.md](CDD_ANALYSIS_AND_IMPROVEMENTS.md) — Implementation status and improvement proposals
-- [ROADMAP.md](ROADMAP.md) — Implementation status and future plans
 - [CHANGELOG.md](CHANGELOG.md) — Version history and compatibility notes
 
 ---
 
-## Projects Using CDD
+## Ecosystem
 
-- **[cdd-context](https://github.com/thegdyne/cdd-context)** — Keep Claude up to date with your project files. Scans a codebase, generates summaries, outputs a context document to paste into Claude at session start.
+| Tool | Purpose |
+|------|---------|
+| **[cdd-tooling](https://github.com/thegdyne/cdd-tooling)** | CLI implementation (`cdd lint`, `cdd test`, etc.) |
+| **[cdd-context](https://github.com/thegdyne/cdd-context)** | Generate project context for Claude sessions |
+| **[cdd-flow](https://github.com/thegdyne/cdd-flow)** | Artifact handoff orchestration |
 
 ---
 
