@@ -353,6 +353,12 @@ The `cdd_spec` field in your project contract declares which CDD spec version yo
 
 ---
 
+## Projects Using CDD
+
+- **[cdd-context](https://github.com/thegdyne/cdd-context)** — Keep Claude up to date with your project files. Scans a codebase, generates summaries, outputs a context document to paste into Claude at session start.
+
+---
+
 ## Executors
 
 CDD supports multiple executors for different languages/environments:
