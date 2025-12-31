@@ -2,6 +2,10 @@
 
 How the CDD tools work together in practice.
 
+## Related
+
+- [HOWTO_SPEC_GENERATION.md](HOWTO_SPEC_GENERATION.md) — Pre-CDD spec creation workflow
+
 ## The Tools
 
 | Tool | Command | Purpose |
