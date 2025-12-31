@@ -414,6 +414,7 @@ Current tooling limitations (see [cdd-tooling](https://github.com/thegdyne/cdd-t
 | **[cdd-tooling](https://github.com/thegdyne/cdd-tooling)** | CLI implementation (`cdd lint`, `cdd test`, etc.) |
 | **[cdd-context](https://github.com/thegdyne/cdd-context)** | Generate project context for Claude sessions |
 | **[cdd-flow](https://github.com/thegdyne/cdd-flow)** | Artifact handoff orchestration |
+| **[cdd-utils](https://github.com/thegdyne/cdd-utils)** | General utilities (utf8 encoding hygiene) |
 
 ---
 
