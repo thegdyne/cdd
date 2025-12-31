@@ -51,29 +51,29 @@ This precision eliminates guesswork and enables targeted iteration.
 ## The Development Loop
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                                                                                 │
-│   Reference ──► Analyze ──► Baseline                                            │
-│       │                         │                                               │
-│       │                         ▼                                               │
-│       │                   Write Contract                                        │
-│       │                         │                                               │
-│       │                         ▼                                               │
-│       │                    Implement                                            │
-│       │                         │                                               │
-│       │                         ▼                                               │
-│       │              Analyze Output ──► Compare                                 │
-│       │                                    │                                    │
-│       │                         ┌─────────┴─────────┐                           │
-│       │                         │                   │                           │
-│       │                    Deviations?          Match?                          │
-│       │                         │                   │                           │
-│       │                         ▼                   ▼                           │
-│       │                   Fix & Iterate         Done                            │
-│       │                         │                                               │
-│       └─────────────────────────┘                                               │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
++---------------------------------------------------------------------------------+
+|                                                                                 |
+|   Reference --> Analyze --> Baseline                                            |
+|       |                         |                                               |
+|       |                         v                                               |
+|       |                   Write Contract                                        |
+|       |                         |                                               |
+|       |                         v                                               |
+|       |                    Implement                                            |
+|       |                         |                                               |
+|       |                         v                                               |
+|       |              Analyze Output --> Compare                                 |
+|       |                                    |                                    |
+|       |                         +----------+----------+                         |
+|       |                         |                     |                         |
+|       |                    Deviations?            Match?                        |
+|       |                         |                     |                         |
+|       |                         v                     v                         |
+|       |                   Fix & Iterate           Done                          |
+|       |                         |                                               |
+|       +-------------------------+                                               |
+|                                                                                 |
++---------------------------------------------------------------------------------+
 ```
 
 1. **Analyze reference** — Tool extracts structure at micro-detail level
@@ -125,7 +125,7 @@ CDD enforces four gates. **You cannot proceed past a gate until it passes.**
 | G3: Freeze | `status: frozen` | Human sets it | Deploy |
 
 ```
-Reference ──► G0: Analyze ──► Contract ──► G1: Lint ──► Implement ──► G2: Test ──► G3: Freeze ──► Deploy
+Reference --> G0: Analyze --> Contract --> G1: Lint --> Implement --> G2: Test --> G3: Freeze --> Deploy
 ```
 
 **Gates are not suggestions. They are hard stops.**
@@ -156,7 +156,7 @@ cdd test contracts/feature.yaml
 cdd test contracts/feature.yaml
 
 # G3: FREEZE - Lock contract, commit
-# Change status: draft → status: frozen
+# Change status: draft -> status: frozen
 git add contracts/feature.yaml src/
 git commit -m "feat: Feature name (CDD contract feature v1.0.0)"
 ```
@@ -192,7 +192,12 @@ See [SPEC.md](SPEC.md#appendix-anti-patterns) for detailed examples.
 ## Tooling
 
 Reference implementation: **[cdd-tooling](https://github.com/thegdyne/cdd-tooling)**
+
 ```bash
+# Recommended: install with pipx for global CLI access
+pipx install cdd-tooling
+
+# Or with pip
 pip install cdd-tooling
 ```
 
@@ -303,15 +308,15 @@ cdd compare analysis/baseline/ analysis/output/
 
 The comparison shows exact deviations:
 ```
-✗ Element spacing: baseline 15pt, output 12pt (deviation: 3pt)
-✓ Field dimensions: match within tolerance
+X Element spacing: baseline 15pt, output 12pt (deviation: 3pt)
+OK Field dimensions: match within tolerance
 ```
 
 Fix specific issues. Re-run. Repeat until clean or within agreed tolerance.
 
 ### 6. Freeze when stable
 
-Change `status: draft` → `status: frozen` in your contracts. Now any changes require a version bump.
+Change `status: draft` -> `status: frozen` in your contracts. Now any changes require a version bump.
 
 ---
 
@@ -383,8 +388,8 @@ The `cdd_spec` field in your project contract declares which CDD spec version yo
 
 | Scenario | Behavior |
 |----------|----------|
-| Major mismatch (project: 2.x, tool: 1.x) | **Error** — incompatible |
-| Minor/patch mismatch | **Warning** — should be compatible |
+| Major mismatch (project: 2.x, tool: 1.x) | **Error** -- incompatible |
+| Minor/patch mismatch | **Warning** -- should be compatible |
 | Exact match required | Use `--require-exact-spec` flag |
 
 ---
@@ -402,12 +407,18 @@ Current tooling limitations (see [cdd-tooling](https://github.com/thegdyne/cdd-t
 
 ## Documentation
 
-- [SPEC.md](SPEC.md) — The normative specification (contract schema, assertion operators, report format)
-- [CHANGELOG.md](CHANGELOG.md) — Version history and compatibility notes
+- [SPEC.md](SPEC.md) -- The normative specification (contract schema, assertion operators, report format)
+- [CHANGELOG.md](CHANGELOG.md) -- Version history and compatibility notes
 
 ---
 
 ## Ecosystem
+
+All tools available on PyPI:
+
+```bash
+pipx install cdd-tooling cdd-context cdd-flow cdd-utils
+```
 
 | Tool | Purpose |
 |------|---------|
