@@ -4,7 +4,8 @@ How the CDD tools work together in practice.
 
 ## Related
 
-- [HOWTO_SPEC_GENERATION.md](HOWTO_SPEC_GENERATION.md) — Pre-CDD spec creation workflow
+- [CDD_PROJECT_GUIDE.md](CDD_PROJECT_GUIDE.md) -- Comprehensive project guide with real-world examples and troubleshooting
+- [HOWTO_SPEC_GENERATION.md](HOWTO_SPEC_GENERATION.md) â€” Pre-CDD spec creation workflow
 
 ## The Tools
 

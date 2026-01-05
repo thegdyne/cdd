@@ -6,12 +6,12 @@ A methodology where analysis comes first, then contracts, then implementation.
 
 CDD enforces a disciplined development flow:
 
-1. **Analyze the reference** — Before anything, get micro-detail perception of what you're building toward
-2. **Write a contract** — Define requirements and tests grounded in the analysis
-3. **Implement against it** — Build code that makes the tests pass
-4. **Compare output to baseline** — Same analysis tool on output vs reference
-5. **Iterate with precision** — Deviations are exact, fixes are targeted
-6. **Freeze when stable** — Lock the contract, changes require version bumps
+1. **Analyze the reference** ???,??EUR? Before anything, get micro-detail perception of what you're building toward
+2. **Write a contract** ???,??EUR? Define requirements and tests grounded in the analysis
+3. **Implement against it** ???,??EUR? Build code that makes the tests pass
+4. **Compare output to baseline** ???,??EUR? Same analysis tool on output vs reference
+5. **Iterate with precision** ???,??EUR? Deviations are exact, fixes are targeted
+6. **Freeze when stable** ???,??EUR? Lock the contract, changes require version bumps
 
 The analysis is the foundation. The contract references it. The implementation fulfills it.
 
@@ -35,9 +35,9 @@ If a reference doesn't exist, create one (wireframe, sketch, example file). If a
 ### Why the hard gate?
 
 Human descriptions are imprecise:
-- "The spacing looks off" → Which spacing? By how much?
-- "Match the original form" → What are the exact dimensions?
-- "Make it sound warm" → What frequencies? What characteristics?
+- "The spacing looks off" ???EUR ?EUR(TM) Which spacing? By how much?
+- "Match the original form" ???EUR ?EUR(TM) What are the exact dimensions?
+- "Make it sound warm" ???EUR ?EUR(TM) What frequencies? What characteristics?
 
 Analysis tools provide precision:
 - "Element R2_5 at (418, 523) is 127x21pt"
@@ -76,14 +76,14 @@ This precision eliminates guesswork and enables targeted iteration.
 +---------------------------------------------------------------------------------+
 ```
 
-1. **Analyze reference** — Tool extracts structure at micro-detail level
-2. **Baseline** — Tool output becomes the spec
-3. **Contract** — Requirements reference specific baseline values
-4. **Implement** — Build toward the contract
-5. **Analyze output** — Same tool on what you built
-6. **Compare** — Deviations from baseline are the feedback
-7. **Iterate** — Fix specific deviations until acceptable
-8. **Done** — Human signs off
+1. **Analyze reference** ???,??EUR? Tool extracts structure at micro-detail level
+2. **Baseline** ???,??EUR? Tool output becomes the spec
+3. **Contract** ???,??EUR? Requirements reference specific baseline values
+4. **Implement** ???,??EUR? Build toward the contract
+5. **Analyze output** ???,??EUR? Same tool on what you built
+6. **Compare** ???,??EUR? Deviations from baseline are the feedback
+7. **Iterate** ???,??EUR? Fix specific deviations until acceptable
+8. **Done** ???,??EUR? Human signs off
 
 ---
 
@@ -149,11 +149,11 @@ cdd paths contracts/feature.yaml
 cdd lint contracts/feature.yaml
 
 # G2: TEST - Run incrementally, add tests in batches
-cdd test contracts/feature.yaml
+cdd isolate contracts/feature.yaml
 
 # G2.5: IMPLEMENT - Create files, re-test until pass
 # ... write code ...
-cdd test contracts/feature.yaml
+cdd isolate contracts/feature.yaml
 
 # G3: FREEZE - Lock contract, commit
 # Change status: draft -> status: frozen
@@ -164,10 +164,10 @@ git commit -m "feat: Feature name (CDD contract feature v1.0.0)"
 ### Quick Reference
 
 ```bash
-cdd paths contracts/feature.yaml    # Verify file paths resolve
-cdd lint contracts/feature.yaml     # Validate schema
-cdd test contracts/feature.yaml     # Run tests
-cdd test contracts/ --only T001     # Run single test
+cdd paths contracts/feature.yaml     # Verify file paths resolve
+cdd lint contracts/feature.yaml      # Validate schema
+cdd isolate contracts/feature.yaml   # Run tests (single contract)
+cdd test contracts/ --only T001      # Run single test from directory
 ```
 
 ---
@@ -347,11 +347,19 @@ cdd lint contracts/
 cdd lint contracts/ --strict
 cdd lint contracts/ --json
 
-# Run tests (exits 1 if failures)
-cdd test contracts/
-cdd test contracts/ --var target=foo
-cdd test contracts/ --only T001
-cdd test contracts/ --json
+# Run tests - SINGLE CONTRACT (RECOMMENDED)
+cdd isolate contracts/feature.yaml           # Test one contract in isolation
+cdd isolate contracts/feature.yaml -v        # Verbose output
+cdd isolate contracts/feature.yaml --keep    # Keep work directory for debugging
+
+# Run tests - DIRECTORY (runs all contracts)
+cdd test contracts/                          # Run all contracts
+cdd test contracts/ --var target=foo         # With variables
+cdd test contracts/ --only T001              # Filter to specific test
+
+# CRITICAL BUG: DO NOT use "cdd test contracts/file.yaml"
+# It will run ALL contracts in the directory, not just file.yaml
+# Always use "cdd isolate" for single contracts
 
 # Coverage report
 cdd coverage contracts/
@@ -366,18 +374,18 @@ Recommended layout:
 
 ```
 my-project/
-├── analysis/
-│   ├── baseline/           # Analysis of reference artifact
-│   └── output/             # Analysis of generated output
-├── reference/
-│   └── original.pdf        # The reference artifact
-├── contracts/
-│   ├── project.yaml
-│   └── component_a.yaml
-├── src/
-│   └── component_a.py
-└── output/
-    └── generated.pdf       # What you built
+???EUR??"???EUR??,????EUR??,? analysis/
+???EUR??EUR?   ???EUR??"???EUR??,????EUR??,? baseline/           # Analysis of reference artifact
+???EUR??EUR?   ???EUR??EUR????EUR??,????EUR??,? output/             # Analysis of generated output
+???EUR??"???EUR??,????EUR??,? reference/
+???EUR??EUR?   ???EUR??EUR????EUR??,????EUR??,? original.pdf        # The reference artifact
+???EUR??"???EUR??,????EUR??,? contracts/
+???EUR??EUR?   ???EUR??"???EUR??,????EUR??,? project.yaml
+???EUR??EUR?   ???EUR??EUR????EUR??,????EUR??,? component_a.yaml
+???EUR??"???EUR??,????EUR??,? src/
+???EUR??EUR?   ???EUR??EUR????EUR??,????EUR??,? component_a.py
+???EUR??EUR????EUR??,????EUR??,? output/
+    ???EUR??EUR????EUR??,????EUR??,? generated.pdf       # What you built
 ```
 
 ---
@@ -400,7 +408,7 @@ Current tooling limitations (see [cdd-tooling](https://github.com/thegdyne/cdd-t
 
 | Issue | Workaround |
 |-------|------------|
-| `cdd test file.yaml` runs all contracts in directory | Test in isolation or use `--only T001` |
+| `cdd test file.yaml` runs all contracts in directory | **Use `cdd isolate file.yaml` instead** for single contracts |
 | Static executor `$.file.content` returns null | Use shell executor with grep |
 
 ---

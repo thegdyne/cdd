@@ -11,11 +11,11 @@ reviewers: [AI1, AI2]
 
 A software development methodology where:
 
-1. **Analysis precedes contracts** — Understand the reference artifact before defining requirements
-2. **The contract is the goal** — Before any code, define what success looks like
-3. **Tests are embedded** — The contract carries its own verification
-4. **Output is diagnostic** — Test results show actual vs expected with full context
-5. **Iteration is fast** — Run tests, see failures, apply fixes, repeat
+1. **Analysis precedes contracts** â€” Understand the reference artifact before defining requirements
+2. **The contract is the goal** â€” Before any code, define what success looks like
+3. **Tests are embedded** â€” The contract carries its own verification
+4. **Output is diagnostic** â€” Test results show actual vs expected with full context
+5. **Iteration is fast** â€” Run tests, see failures, apply fixes, repeat
 
 This applies to any software project.
 
@@ -130,34 +130,34 @@ CDD defines four mandatory gates. Implementation MUST NOT proceed past a gate un
 
 ```
 Reference artifact exists
-        │
-        ▼
-┌───────────────┐
-│  G0: ANALYZE  │ ── no baseline ──▶ Run cdd analyze
-└───────────────┘
-        │ baseline exists
-        ▼
+        â”‚
+        â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  G0: ANALYZE  â”‚ â”€â”€ no baseline â”€â”€â–¶ Run cdd analyze
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+        â”‚ baseline exists
+        â–¼
 Write contract (with source_refs)
-        │
-        ▼
-┌───────────────┐
-│   G1: LINT    │ ── fail ──▶ Fix contract
-└───────────────┘
-        │ pass
-        ▼
+        â”‚
+        â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   G1: LINT    â”‚ â”€â”€ fail â”€â”€â–¶ Fix contract
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+        â”‚ pass
+        â–¼
 Implement
-        │
-        ▼
-┌───────────────┐
-│   G2: TEST    │ ── fail ──▶ Fix implementation
-└───────────────┘
-        │ pass
-        ▼
-┌───────────────┐
-│  G3: FREEZE   │ ── not frozen ──▶ Set status: frozen
-└───────────────┘
-        │ frozen
-        ▼
+        â”‚
+        â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   G2: TEST    â”‚ â”€â”€ fail â”€â”€â–¶ Fix implementation
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+        â”‚ pass
+        â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  G3: FREEZE   â”‚ â”€â”€ not frozen â”€â”€â–¶ Set status: frozen
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+        â”‚ frozen
+        â–¼
 Deploy
 ```
 
@@ -174,10 +174,10 @@ Deploying without passing all gates is a **process violation**. Document violati
 
 Gates are enforced by:
 
-1. **Exit codes** — All CDD commands exit 1 on failure
-2. **CI integration** — Gates run in CI pipeline, block merge on failure
-3. **Pre-commit hooks** — Optional local enforcement
-4. **`cdd gate` command** — Single command that runs all gates (planned)
+1. **Exit codes** â€” All CDD commands exit 1 on failure
+2. **CI integration** â€” Gates run in CI pipeline, block merge on failure
+3. **Pre-commit hooks** â€” Optional local enforcement
+4. **`cdd gate` command** â€” Single command that runs all gates (planned)
 
 ---
 
@@ -194,7 +194,7 @@ Gates are enforced by:
 | Tests runnable | `cdd test` executes | No missing tools or broken steps |
 | Tests pass | `cdd test` exits 0 | All assertions satisfied |
 | Contract frozen | `status: frozen` in YAML | Explicit human decision |
-| Ready to deploy | G0 ∧ G1 ∧ G2 ∧ G3 | All gates passed |
+| Ready to deploy | G0 âˆ§ G1 âˆ§ G2 âˆ§ G3 | All gates passed |
 
 ---
 
@@ -469,9 +469,9 @@ change_log:
 
 The `call` action invokes a function/method. The target is resolved as follows:
 
-1. **If step has `method:`** — Use that method name
-2. **Else if `runner.symbol` is set** — Use that symbol
-3. **Else** — Error: no call target defined
+1. **If step has `method:`** â€”Â Use that method name
+2. **Else if `runner.symbol` is set** â€”Â Use that symbol
+3. **Else** â€”Â Error: no call target defined
 
 ```yaml
 # Option 1: runner-level default
@@ -514,10 +514,10 @@ result:
 ```
 
 JSONPath examples:
-- `$.result.ok` — success boolean
-- `$.result.value.temp` — nested payload access
-- `$.result.meta.duration_ms` — timing
-- `$.result.error_code` — error type when ok=false
+- `$.result.ok` â€”Â success boolean
+- `$.result.value.temp` â€”Â nested payload access
+- `$.result.meta.duration_ms` â€”Â timing
+- `$.result.error_code` â€”Â error type when ok=false
 
 ### call_n Envelope (Special Case)
 
@@ -564,7 +564,7 @@ Rules for evaluating JSONPath expressions in assertions:
 - `matches`: Uses `re.search(pattern, string)` with default flags (no MULTILINE/DOTALL unless pattern includes inline flags like `(?m)`)
 - `contains` on array: Checks if value is an element (exact equality, no substring matching on elements)
 - `contains` on string: Checks if substring is present
-- `contains` on object: **Not valid** — use `has_keys` instead
+- `contains` on object: **Not valid** â€”Â use `has_keys` instead
 - `has_keys`: Passes if object contains at least the expected keys; extra keys are allowed. Only valid on objects.
 
 ### Report Output
@@ -609,10 +609,10 @@ Explicit operators, no magic parsing:
 ### JSONPath References
 
 `$.` prefix references values from test context:
-- `$.result` — saved output from a step
-- `$.result.value.temp` — nested access
-- `$.first.meta.cache_hit` — from named save
-- `$.vars.target` — injected parameter (see Parameterisation)
+- `$.result` â€”Â saved output from a step
+- `$.result.value.temp` â€”Â nested access
+- `$.first.meta.cache_hit` â€”Â from named save
+- `$.vars.target` â€”Â injected parameter (see Parameterisation)
 
 **Both `actual` and `expected` may be JSONPath references** (strings starting with `$.`):
 
@@ -627,7 +627,7 @@ assert:
 ### Implicit Expected Values
 
 Some operators have implicit expected:
-- `file_exists` — implicit `expected: true`
+- `file_exists` â€”Â implicit `expected: true`
 
 In report output, implicit values are made explicit for uniformity.
 
@@ -665,7 +665,7 @@ assert:
 **Rules:**
 - Passes iff `abs(actual - expected) <= tolerance`
 - `actual`, `expected`, and `tolerance` MUST be numbers (else `type_mismatch`)
-- Missing JSONPath -> ' `null` -> ' `type_mismatch`
+- Missing JSONPath ->Â ' `null` ->Â ' `type_mismatch`
 
 ---
 
@@ -938,9 +938,9 @@ runner:
 - Static tests should use `type: unit` (they are deterministic and have no external dependencies).
 
 The static executor populates `$.ast` with:
-- `$.ast.calls` — Array of function/method calls found
-- `$.ast.bus_reads` — Object of bus variable reads (domain-specific)
-- `$.ast.source` — Original source (for reference, not assertion)
+- `$.ast.calls` â€”Â Array of function/method calls found
+- `$.ast.bus_reads` â€”Â Object of bus variable reads (domain-specific)
+- `$.ast.source` â€”Â Original source (for reference, not assertion)
 
 ### Shell Executor
 
@@ -1041,8 +1041,8 @@ Reports include `schema_version` to allow consumers to detect format compatibili
 | `"1.0"` | Initial report format (this spec) |
 
 **Versioning rules:**
-- Minor version bump (1.0 -> ' 1.1): Additive changes only (new optional fields)
-- Major version bump (1.x -> ' 2.0): Breaking changes to existing fields
+- Minor version bump (1.0 ->Â ' 1.1): Additive changes only (new optional fields)
+- Major version bump (1.x ->Â ' 2.0): Breaking changes to existing fields
 
 Consumers should check `schema_version` before parsing. Unknown minor versions are safe to parse (ignore unknown fields). Unknown major versions should warn or fail.
 
@@ -1118,7 +1118,7 @@ JSON output from a run:
 All reports MUST satisfy these invariants for cross-executor consistency:
 
 **Status values:**
-- `results[].status` ∈ `{"pass", "fail", "skipped", "error"}`
+- `results[].status` âˆˆ `{"pass", "fail", "skipped", "error"}`
 - No other status values are valid
 
 **Assertions array:**
@@ -1261,7 +1261,7 @@ skip_if: '$.env.python >= "3.10"'                # string version compare (use _
 
 ### skip_if Evaluation Rules
 
-**JSONPath resolution:** Uses standard JSONPath rules (missing path -> ' `null`).
+**JSONPath resolution:** Uses standard JSONPath rules (missing path ->Â ' `null`).
 
 **Type coercion:** None. Comparing incompatible types (e.g., `"3" > 2`) results in `false`.
 
@@ -1478,9 +1478,9 @@ status: draft | frozen | deprecated
 
 ### Rules
 
-1. **Only frozen contracts can ship** — Draft contracts are for development
-2. **Changes to frozen require version bump** — No silent modifications
-3. **Changelog required** — Document what changed and why
+1. **Only frozen contracts can ship** â€”Â Draft contracts are for development
+2. **Changes to frozen require version bump** â€”Â No silent modifications
+3. **Changelog required** â€”Â Document what changed and why
 
 ---
 
@@ -1515,18 +1515,29 @@ Coverage is calculated based on `tests[].requirement` links:
 `contract-lint` behavior:
 - **Fails** if any requirement has zero linked tests
 - **Warns** on unlinked tests in frozen contracts (does not fail)
-- **Passes** if all requirements have ≥1 linked test, regardless of unlinked tests
+- **Passes** if all requirements have â‰¥1 linked test, regardless of unlinked tests
 
 ### CLI Tools
 
 ```bash
+# Verify paths in contracts resolve (ALWAYS DO THIS FIRST)
+contract-paths contracts/api_client.yaml
+# Exit 0: all paths resolve
+# Exit 1: any path missing
+
 # Validate contract schema + requirement coverage (gate)
 contract-lint contracts/**/*.yaml
-# Exit 0: schema valid, all requirements have ≥1 test
+# Exit 0: schema valid, all requirements have â‰¥1 test
 # Exit 1: schema error OR any requirement has 0 tests
 
-# Run one contract
+# Run one contract in isolation (RECOMMENDED for single contracts)
+contract-isolate contracts/api_client.yaml
+# Exit 0: all tests pass
+# Exit 1: any test fails
+
+# Run one contract (directory-aware, may run multiple contracts)
 contract-test contracts/api_client.yaml
+# CAUTION: Runs all contracts in the directory, not just the specified file
 # Exit 0: all tests pass
 # Exit 1: any test fails
 
@@ -1551,7 +1562,7 @@ contract-test contracts/api_client.yaml --tag performance
 
 # Requirement coverage report (informational)
 contract-coverage contracts/
-# Always exits 0. Output: R001 (2 linked tests), R002 (1 linked test), R003 (0 linked tests) -> Â gap!
+# Always exits 0. Output: R001 (2 linked tests), R002 (1 linked test), R003 (0 linked tests) ->Â Ã‚Â gap!
 
 # Requirement coverage with strict mode (gate)
 contract-coverage contracts/ --strict
@@ -1566,8 +1577,10 @@ contract-scaffold contracts/api_client.yaml --output src/api/
 
 | Tool | Purpose |
 |------|---------|
+| `contract-paths` | **Gate.** Path verification. Fails if any referenced path doesn't exist. |
 | `contract-lint` | **Gate.** Schema validation + requirement coverage. Fails on schema errors or uncovered requirements; warns on unlinked tests in frozen contracts. |
-| `contract-test` | **Gate.** Run tests. Fails if any test fails. |
+| `contract-isolate` | **Gate.** Run single contract in isolation. Fails if any test fails. Recommended for testing individual contracts. |
+| `contract-test` | **Gate.** Run tests. Fails if any test fails. Note: When given a single file, runs all contracts in that directory (known issue). |
 | `contract-coverage` | **Report.** Show coverage gaps. Only fails with `--strict`. |
 | `contract-scaffold` | **Generator.** Create implementation stubs from contract. |
 
@@ -1575,7 +1588,9 @@ contract-scaffold contracts/api_client.yaml --output src/api/
 
 | Tool | Exit 0 | Exit 1 |
 |------|--------|--------|
+| `contract-paths` | All paths resolve | Any path missing |
 | `contract-lint` | Schema valid AND all requirements have tests | Schema error OR uncovered requirement |
+| `contract-isolate` | All tests pass | Any test fails |
 | `contract-test` | All tests pass | Any test fails |
 | `contract-coverage` | Always (default) | Uncovered requirements (with `--strict`) |
 
@@ -1716,7 +1731,7 @@ requirements:
     priority: must
     description: No DC offset
     acceptance_criteria:
-      - DC offset within ±0.01
+      - DC offset within Â±0.01
       
   - id: R007
     priority: must
@@ -1807,7 +1822,7 @@ matrix:
 ## Implementation Phases
 
 ### Phase 1: Foundation (Week 1)
-- Lock contract schema (this spec -> ' v1.0 frozen)
+- Lock contract schema (this spec ->Â ' v1.0 frozen)
 - Implement `contract-lint` (schema validation + requirement coverage)
 - Implement `contract-test` for Python executor
 - Create example contract as proof of concept
@@ -1845,49 +1860,49 @@ matrix:
 ## Changelog
 
 
-- **1.1.5** (2025-12-29): Mandatory gates and anti-patterns — `No behavior change`
+- **1.1.5** (2025-12-29): Mandatory gates and anti-patterns â€” `No behavior change`
   - Added Mandatory Gates section (G0-G3) with sequence diagram
   - Added Process Checkpoints table
   - Added Anti-Patterns appendix (AP1-AP6)
   - Added HTML analyzer support (`cdd analyze *.html`)
   - Clarifies process enforcement without changing contract schema or tooling behavior
 
-- **1.1.4** (2025-12-29): Analysis-first methodology — `No behavior change`
+- **1.1.4** (2025-12-29): Analysis-first methodology â€” `No behavior change`
   - Added "Analysis precedes contracts" as first principle in What section
   - Added Reference, Analysis, Baseline to Glossary
   - Updated The Model diagram to include Reference Analysis and Compare phases
   - Clarifies process without changing contract schema or tooling behavior
 
-- **1.1.3** (2025-12-28): Shell variable interpolation — `No behavior change`
+- **1.1.3** (2025-12-28): Shell variable interpolation â€” `No behavior change`
   - Interpolate variables in shell command arguments (bug fix)
 
-- **1.1.2** (2025-12-28): Path resolution fix — `No behavior change`
+- **1.1.2** (2025-12-28): Path resolution fix â€” `No behavior change`
   - Fix repo_root detection when passing single contract file
 
-- **1.1.1** (2025-12-27): Static scanning integration — `Additive, backwards compatible`
+- **1.1.1** (2025-12-27): Static scanning integration â€” `Additive, backwards compatible`
   - Native static file scanning wired into runner
   - Expanded README with full usage guide
 
-- **1.1.0** (2025-12-27): Tooling integration "” `Additive, backwards compatible`
+- **1.1.0** (2025-12-27): Tooling integration "â€ `Additive, backwards compatible`
   - Added `cdd_spec` field to Project Contract Fields (required for frozen, optional for draft)
   - Tooling reads `cdd_spec` for version compatibility checking
   - Fallback to `.cdd-version` file if `cdd_spec` not present
   - Major version mismatch = error; minor/patch = warning
   - Added `--require-exact-spec` flag for strict enforcement
 
-- **1.0.14** (2025-12-27): Schema completeness — `No behavior change`
+- **1.0.14** (2025-12-27): Schema completeness â€”Â `No behavior change`
   - Added normative Step Fields table (action, with, save_as, method, n, warmup, command, seconds, fixture)
   - Clarified `contains` on arrays uses exact element equality (no substring matching)
   - Updated coverage example to say "linked tests" for clarity
   - Renamed Process Evolution to "Appendix: Process Evolution"
 
-- **1.0.13** (2025-12-27): Review fixes — `No behavior change`
-  - Fixed `±` encoding issue
+- **1.0.13** (2025-12-27): Review fixes â€”Â `No behavior change`
+  - Fixed `Â±` encoding issue
   - Added `$.env.os_family` for clean platform skip logic (os remains detailed string)
   - Fixed `contract-lint` Tool Purposes description to match warning behavior
   - Added explicit `report_type` invariant for matrix summary reports
 
-- **1.0.12** (2025-12-27): Anti-mutation guardrails — `No behavior change`
+- **1.0.12** (2025-12-27): Anti-mutation guardrails â€”Â `No behavior change`
   - Added Compatibility Promise with table format and behavioral test clause
   - Added Normative Core definition (explicit list of protected sections)
   - Added non-normative section guardrail (prevents accidental behavioral language)
@@ -1895,13 +1910,13 @@ matrix:
   - Added changelog compatibility notes requirement with format example
   - Renumbered rules for clarity
 
-- **1.0.11** (2025-12-27): Process Evolution governance — `No behavior change`
+- **1.0.11** (2025-12-27): Process Evolution governance â€”Â `No behavior change`
   - Added Process Evolution section (governance, not normative)
   - Defined feedback loop for spec improvements
   - Added "spec before tooling" anti-drift rule
   - Defined dual-AI review requirements
 
-- **1.0.10** (2025-12-27): Report invariants and AST stability — `No behavior change`
+- **1.0.10** (2025-12-27): Report invariants and AST stability â€”Â `No behavior change`
   - Added Report Invariants block (status values, assertions array, required/optional fields)
   - Added AST field stability note (only calls/bus_reads are stable in v1.0)
 
@@ -2022,7 +2037,7 @@ Ad-hoc verification doesn't get recorded in the contract. Future runs won't repe
 **Right:**
 > Add analyzer to CDD tooling, use `cdd analyze` command
 
-Standalone scripts break the contract→test→report chain. Tests can't find the tool.
+Standalone scripts break the contractâ†’testâ†’report chain. Tests can't find the tool.
 
 ### AP5: Draft Contracts in Production
 
@@ -2075,16 +2090,16 @@ Projects using this spec may reveal gaps or ambiguities; changes follow the loop
 - Ambiguity caused implementation divergence
 - Edge case not covered by current spec
 - Tooling revealed spec gap
-- Spec bug fix — A normative mistake that would cause incorrect runner behavior can be patched without project-first validation
+- Spec bug fix â€”Â A normative mistake that would cause incorrect runner behavior can be patched without project-first validation
   - Must include a regression test in the reference runner (once it exists) and a clear changelog note
 
 ### Version Semantics
 
 | Bump | When | Example |
 |------|------|---------|
-| Patch (1.0.x) | Clarifications, examples, typos | 1.0.10 -> ' 1.0.11 |
-| Minor (1.x.0) | New optional features, additive changes; backwards compatible defaults | 1.0.11 -> ' 1.1.0 |
-| Major (x.0.0) | Breaking changes to normative sections | 1.1.0 -> ' 2.0.0 |
+| Patch (1.0.x) | Clarifications, examples, typos | 1.0.10 ->Â ' 1.0.11 |
+| Minor (1.x.0) | New optional features, additive changes; backwards compatible defaults | 1.0.11 ->Â ' 1.1.0 |
+| Major (x.0.0) | Breaking changes to normative sections | 1.1.0 ->Â ' 2.0.0 |
 
 ### Compatibility Promise
 
@@ -2094,7 +2109,7 @@ Projects using this spec may reveal gaps or ambiguities; changes follow the loop
 | Minor | Break existing contracts or runners | Add new optional fields, operators, actions with backwards-compatible defaults |
 | Major | *(no restrictions)* | Change any behavior |
 
-**Test:** If an existing contract would produce different results (pass-> 'fail, fail-> 'pass, different report shape), it's not a patch. If an existing runner would reject a previously-valid contract or produce wrong output, it's not minor.
+**Test:** If an existing contract would produce different results (pass->Â 'fail, fail->Â 'pass, different report shape), it's not a patch. If an existing runner would reject a previously-valid contract or produce wrong output, it's not minor.
 
 ### Normative Core
 
@@ -2117,17 +2132,17 @@ The following sections constitute the Normative Core:
 
 ### Rules
 
-1. **Spec before tooling** — If tooling implements behavior not described in the spec, the tooling is experimental until the spec is updated or the behavior removed
-2. **Reference runner is arbiter** — Once a reference runner exists, any normative change MUST be accompanied by a reference-runner test demonstrating the intended behavior. If spec and runner diverge, the spec is authoritative and the runner is buggy.
-3. **Project-first** — Test changes in a real project before proposing
-4. **Generalize** — Spec changes must apply beyond the originating project
-5. **Dual-AI review** — Normative changes require two independent AI passes (fresh context), each confirming: ambiguity removed, backwards compatibility preserved, examples consistent
-6. **Changelog with compatibility** — Every changelog entry must include a compatibility note:
+1. **Spec before tooling** â€”Â If tooling implements behavior not described in the spec, the tooling is experimental until the spec is updated or the behavior removed
+2. **Reference runner is arbiter** â€”Â Once a reference runner exists, any normative change MUST be accompanied by a reference-runner test demonstrating the intended behavior. If spec and runner diverge, the spec is authoritative and the runner is buggy.
+3. **Project-first** â€”Â Test changes in a real project before proposing
+4. **Generalize** â€”Â Spec changes must apply beyond the originating project
+5. **Dual-AI review** â€”Â Normative changes require two independent AI passes (fresh context), each confirming: ambiguity removed, backwards compatibility preserved, examples consistent
+6. **Changelog with compatibility** â€”Â Every changelog entry must include a compatibility note:
    ```
-   - **X.Y.Z** (date): Summary — `No behavior change` | `Additive, backwards compatible` | `Breaking`
+   - **X.Y.Z** (date): Summary â€”Â `No behavior change` | `Additive, backwards compatible` | `Breaking`
    ```
-7. **Frozen means frozen** — Breaking changes to frozen sections require major version bump
+7. **Frozen means frozen** â€”Â Breaking changes to frozen sections require major version bump
 
 ---
 
-*Version 1.1.5 — Frozen. Reviewed and approved by AI1 and AI2.*
+*Version 1.1.5 â€” Frozen. Reviewed and approved by AI1 and AI2.*

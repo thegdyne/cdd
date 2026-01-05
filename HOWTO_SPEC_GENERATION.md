@@ -4,6 +4,8 @@ How to create feature specifications before CDD contracts.
 
 Spec generation is a **pre-gate** activity. The frozen spec becomes the reference artifact that CDD contracts are written against.
 
+> **See also:** [CDD_PROJECT_GUIDE.md](CDD_PROJECT_GUIDE.md) for comprehensive guidance on the complete CDD workflow, including real-world implementation lessons and contract patterns.
+
 ```
 ┌─────────────────────────────────────────┐
 │  SPEC GENERATION (this document)        │
