@@ -1,7 +1,7 @@
 ---
 doc_status: frozen
-doc_version: 1.1.5
-date: 2025-12-29
+doc_version: 1.1.6
+date: 2026-01-06
 reviewers: [AI1, AI2]
 ---
 
@@ -1520,24 +1520,37 @@ Coverage is calculated based on `tests[].requirement` links:
 ### CLI Tools
 
 ```bash
-# Verify paths in contracts resolve (ALWAYS DO THIS FIRST)
-contract-paths contracts/api_client.yaml
-# Exit 0: all paths resolve
-# Exit 1: any path missing
+# Verify file paths in contracts resolve (G0.3 gate - run before testing)
+contract-paths contracts/
+contract-paths contracts/feature.yaml
+# Exit 0: all paths valid
+# Exit 2: path verification failed
+
+# Run single contract in isolation (RECOMMENDED for single contracts)
+contract-isolate contracts/feature.yaml
+# Exit 0: all tests pass
+# Exit 1: test failures
+# Exit 2: path verification failed
+# Exit 3: contract parse error
+# Exit 4: project root not found
+# Exit 5: source path invalid
+
+# contract-isolate options
+contract-isolate contracts/feature.yaml --verbose    # Show detailed operations
+contract-isolate contracts/feature.yaml --keep       # Keep work directory after run
+contract-isolate contracts/feature.yaml --keep-on-fail  # Keep only on failure
+contract-isolate contracts/feature.yaml --dry-run    # Print plan without executing
+contract-isolate contracts/feature.yaml --paths-only # Only verify paths
 
 # Validate contract schema + requirement coverage (gate)
 contract-lint contracts/**/*.yaml
-# Exit 0: schema valid, all requirements have â‰¥1 test
+# Exit 0: schema valid, all requirements have >=1 test
 # Exit 1: schema error OR any requirement has 0 tests
 
-# Run one contract in isolation (RECOMMENDED for single contracts)
-contract-isolate contracts/api_client.yaml
-# Exit 0: all tests pass
-# Exit 1: any test fails
-
-# Run one contract (directory-aware, may run multiple contracts)
-contract-test contracts/api_client.yaml
-# CAUTION: Runs all contracts in the directory, not just the specified file
+# Run contracts in a directory
+# CAUTION: contract-test file.yaml runs ALL contracts in the directory, not just the file!
+# Use contract-isolate for single contract testing.
+contract-test contracts/
 # Exit 0: all tests pass
 # Exit 1: any test fails
 
@@ -1577,22 +1590,22 @@ contract-scaffold contracts/api_client.yaml --output src/api/
 
 | Tool | Purpose |
 |------|---------|
-| `contract-paths` | **Gate.** Path verification. Fails if any referenced path doesn't exist. |
+| `contract-paths` | **Gate (G0.3).** Verify all file paths in contract resolve. Run before testing. |
+| `contract-isolate` | **Gate.** Run single contract in isolated workspace. Recommended for single contracts. |
 | `contract-lint` | **Gate.** Schema validation + requirement coverage. Fails on schema errors or uncovered requirements; warns on unlinked tests in frozen contracts. |
-| `contract-isolate` | **Gate.** Run single contract in isolation. Fails if any test fails. Recommended for testing individual contracts. |
-| `contract-test` | **Gate.** Run tests. Fails if any test fails. Note: When given a single file, runs all contracts in that directory (known issue). |
+| `contract-test` | **Gate.** Run all contracts in directory. Fails if any test fails. |
 | `contract-coverage` | **Report.** Show coverage gaps. Only fails with `--strict`. |
 | `contract-scaffold` | **Generator.** Create implementation stubs from contract. |
 
 ### Exit Codes
 
-| Tool | Exit 0 | Exit 1 |
-|------|--------|--------|
-| `contract-paths` | All paths resolve | Any path missing |
-| `contract-lint` | Schema valid AND all requirements have tests | Schema error OR uncovered requirement |
-| `contract-isolate` | All tests pass | Any test fails |
-| `contract-test` | All tests pass | Any test fails |
-| `contract-coverage` | Always (default) | Uncovered requirements (with `--strict`) |
+| Tool | Exit 0 | Exit 1 | Exit 2 |
+|------|--------|--------|--------|
+| `contract-paths` | All paths valid | - | Path verification failed |
+| `contract-isolate` | All tests pass | Test failures | Path verification failed |
+| `contract-lint` | Schema valid AND all requirements have tests | Schema error OR uncovered requirement | - |
+| `contract-test` | All tests pass | Any test fails | - |
+| `contract-coverage` | Always (default) | Uncovered requirements (with `--strict`) | - |
 
 ---
 
@@ -1858,6 +1871,15 @@ matrix:
 ---
 
 ## Changelog
+
+
+- **1.1.6** (2026-01-06): CLI tools for isolation and path verification -- `No behavior change`
+  - Added `contract-paths` command for path verification (G0.3 gate)
+  - Added `contract-isolate` command for single contract testing in isolation
+  - Added CAUTION note about `contract-test file.yaml` running all contracts in directory
+  - Updated Tool Purposes table with new commands
+  - Updated Exit Codes table with new commands and exit code 2
+
 
 
 - **1.1.5** (2025-12-29): Mandatory gates and anti-patterns â€” `No behavior change`

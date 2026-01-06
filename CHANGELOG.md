@@ -1,26 +1,19 @@
 # Changelog
 All notable changes to the CDD spec and tooling.
 
-## [1.1.6] - 2026-01-05
+## [1.1.6] - 2026-01-06
 
 ### Added
-- `cdd isolate` command for testing single contracts in isolation (addresses directory-running bug)
-- `cdd paths` command (G0.3 gate) for path verification before testing
-- Documentation of `cdd test file.yaml` bug (runs all contracts in directory, not just file)
+- `contract-paths` command for path verification (G0.3 gate)
+- `contract-isolate` command for single contract testing in isolation
+- CAUTION note in SPEC.md about `contract-test file.yaml` running all contracts in directory
 
 ### Changed
-- README.md: Updated CLI reference to recommend `cdd isolate` for single contracts
-- README.md: Updated Practical Workflow to use `cdd isolate` instead of `cdd test`
-- README.md: Updated Known Issues to recommend `cdd isolate` as workaround
-- HOWTO.md: Updated all workflows to use `cdd isolate` for single contracts
-- HOWTO.md: Added path verification step to all workflows
-- HOWTO.md: Updated Quick Reference Card and Common Patterns
-- SPEC.md: Added `contract-paths` and `contract-isolate` to CLI Tools section
-- SPEC.md: Updated Tool Purposes table to include new commands
-- SPEC.md: Updated Exit Codes table to include new commands
+- SPEC.md Tool Purposes table updated with new commands
+- SPEC.md Exit Codes table updated with new commands and exit code 2
 
 ### Compatibility
-- **No behavior change** -- documentation updates only, clarifies best practices
+- **No behavior change** -- documents existing tooling functionality
 
 ## [1.1.5] - 2025-12-29
 
